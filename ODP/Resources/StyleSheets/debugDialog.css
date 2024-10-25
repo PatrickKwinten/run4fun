@@ -1,0 +1,14 @@
+table.xspDumpTable {
+  counter-reset: rowNumber;
+}
+
+table.xspDumpTable tr::before {
+  display: table-cell;
+  counter-increment: rowNumber;
+  content: counter(rowNumber) ".";
+  padding-right: 0.3em;
+  padding-top: 0.3em;
+  padding-topleft: 0.3em;
+  text-align: right;
+  color:grey;
+}

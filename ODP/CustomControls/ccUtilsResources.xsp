@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.resources>
+		<xp:bundle
+			src="/datasources.properties"
+			var="datasources">
+		</xp:bundle>
+		<xp:bundle
+			src="/strings.properties"
+			var="strings">
+		</xp:bundle>
+		<xp:styleSheet href="/bootstrap-overwrite.css"></xp:styleSheet>
+
+		<xp:script
+			src="/csjsUtils.js"
+			clientSide="true">
+		</xp:script>
+	</xp:this.resources>
+
+	<xc:ccUtilsResourcesAMDDisable></xc:ccUtilsResourcesAMDDisable>
+	<!-- Place here all third party plugins/extensions who probably use AMD 
+		loading and therefor conflict with Dojo -->		
+	<!-- <xc:ccUtilsResourcesDataTables></xc:ccUtilsResourcesDataTables> -->
+	
+	<!-- <xc:ccUtilsResourcesSelect2></xc:ccUtilsResourcesSelect2> -->
+	<xc:ccUtilsResourcesPlugins></xc:ccUtilsResourcesPlugins>
+	<xc:ccUtilsResourcesDatePicker></xc:ccUtilsResourcesDatePicker>
+	<!-- <xc:ccUtilsResourcesGrowl></xc:ccUtilsResourcesGrowl> -->
+	<xc:ccUtilsResourcesFontawesome></xc:ccUtilsResourcesFontawesome> 
+	
+	<xc:ccUtilsResourcesAMDEnable></xc:ccUtilsResourcesAMDEnable>
+</xp:view>

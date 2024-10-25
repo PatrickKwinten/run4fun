@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:subscriptionBean.loadObjects()}]]></xp:this.beforePageLoad>
+	<div class="container main-content">
+	<div class="row">
+			<div class="col-md-9">
+				<h1>
+					<xp:text value="${strings.header_event}" />&#160;
+					<xp:panel
+						tagName="small"
+						id="pnlSmall"
+						rendered="#{javascript:!eventBean.getEvent().isEditable()}">
+						<xp:text value="#{eventBean.event.name}" />
+					</xp:panel>
+				</h1>
+			</div>
+			<div class="col-md-3">
+				<h1 class="pull-right">
+					&#160;
+					<small>
+						<xp:panel
+							tagName="span"
+							styleClass="#{javascript:return eventBean.eventStyleClass(eventBean.getEvent());}">
+							<xp:text
+								escape="false"
+								value="#{javascript:return eventBean.eventIcon(eventBean.getEvent());}">
+							</xp:text>
+							&#160;
+							<xp:text>
+								<xp:this.value><![CDATA[#{javascript:try {
+	var status = eventBean.getEvent().getStatus()
+	if (null == status) {
+		return "???";
+	} else {
+		return strings["event_status_" + status];
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.value>
+							</xp:text>
+						</xp:panel>
+
+					</small>
+				</h1>
+			</div>
+		</div>
+		<xc:ccEventStatus></xc:ccEventStatus>
+		<xp:panel id="pnlScoreboard">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var status = eventBean.getEvent().getStatus();
+	if (null != status && (status.equals("running") || status.equals("ended"))) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+			<p class="bg-success">
+				<xp:text value="${strings.event_ended_intro}" />&#160;			
+				<xp:link
+					text="scoreboard"
+					title="${strings.link_title_scoreboard}"
+					target="_blank">
+					<xp:this.value><![CDATA[#{javascript:return "scoreboard.xsp?unid=" + eventBean.getEvent().getUnid();}]]></xp:this.value>
+					<i
+						class="fa fa-line-chart"
+						aria-hidden="true">
+					</i>
+					&#160;
+				</xp:link>
+				!
+			</p>
+		</xp:panel>
+		<xp:panel
+			rendered="#{javascript:appBean.isAnonymous();}">						
+        <div class="row">
+        	<div class="col-md-12">
+        	<p class="bg-info"><xp:text value="${strings.event_anonymous}" /></p>
+        	</div>
+        </div>
+        </xp:panel>
+
+		<xp:panel
+			styleClass="form-group"
+			rendered="#{javascript:eventBean.getEvent().isEditable()}">
+			<label for="evName"><xp:text value="${strings.label_name}" /></label>
+			<xp:inputText
+				id="inputName"
+				title="${strings.title_event_name}"
+				value="#{eventBean.event.name}"
+				disabled="#{!eventBean.event.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.ph_event_name}" />
+					<xp:attr
+						name="aria-describedby"
+						value="placeHelp" />
+				</xp:this.attrs>
+			</xp:inputText>
+			<xp:panel
+				rendered="#{javascript:eventBean.getEvent().isEditable()}">
+				<small
+					id="small1"
+					class="form-text text-muted">
+					<xp:text value="${strings.helper_event_name}" />
+				</small>
+			</xp:panel>
+		</xp:panel>
+
+		<div class="form-group">
+			<label for="evDate"><xp:text value="${strings.label_date}" /></label>
+			<xp:panel>
+				<xp:this.attrs>
+					<xp:attr
+						name="id"
+						value="eventDate">
+					</xp:attr>
+					<xp:attr
+						name="data-target-input"
+						value="nearest">
+					</xp:attr>
+				</xp:this.attrs>
+				<xp:this.styleClass><![CDATA[#{javascript:if (eventBean.getEvent().isEditable()) {
+	return "input-group date";
+}}]]></xp:this.styleClass>
+				<xp:inputText
+					id="inpEventDate"
+					title="${strings.label_date_title}"
+					value="#{eventBean.event.date}"
+					disabled="#{!eventBean.event.editable}">
+					<xp:this.attrs>
+						<xp:attr
+							name="${strings.label_date_ph}"
+							value="Which day?" />
+						<xp:attr
+							name="aria-describedby"
+							value="dateHelp" />
+					</xp:this.attrs>
+					<xp:this.converter>
+						<xp:convertDateTime
+							type="date"
+							pattern="yyyy/MM/dd" />
+					</xp:this.converter>
+				</xp:inputText>
+				<xp:panel
+					rendered="#{javascript:eventBean.getEvent().isEditable()}">
+					<span
+						class="input-group-addon"
+						data-target="#eventDate"
+						data-toggle="datetimepicker"
+						id="inpDateIcon">
+						<span class="input-group-text">
+							<i
+								class="fa fa-calendar"
+								aria-hidden="true" />
+						</span>
+					</span>
+				</xp:panel>
+			</xp:panel>
+			<xp:panel
+				rendered="#{javascript:eventBean.getEvent().isEditable()}">
+				<xp:scriptBlock
+					id="scriptBlock2"
+					rendered="#{eventBean.event.editable}">
+					<xp:this.value><![CDATA[
+	$(document).ready(
+		function(){
+		$('#eventDate').datetimepicker({
+	   			format: 'YYYY/MM/DD',
+	   			startDate: new Date(),
+	   			todayBtn: true,
+				clearBtn: true,
+				calendarWeeks: true,
+				autoclose: true,
+				todayHighlight: true,
+				ignoreReadonly:true,
+				widgetPositioning: {
+            vertical: 'auto',
+            horizontal: 'left'
+        }
+	  		});		
+	});
+	
+	$('#inpDateIcon').click(function() {
+	    $(document).ready(function() {
+	        x$('#{id:inpEventDate}').focus();
+	    });
+	});
+	]]></xp:this.value>
+				</xp:scriptBlock>
+				<small
+					id="dateHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_date_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+
+		<div class="form-group">
+			<label for="evTime"><xp:text value="${strings.label_time}" /></label>
+			<xp:panel>
+				<xp:this.attrs>
+					<xp:attr
+						name="data-target-input"
+						value="nearest">
+					</xp:attr>
+					<xp:attr
+						name="id"
+						value="eventTime">
+					</xp:attr>
+				</xp:this.attrs>
+				<xp:this.styleClass><![CDATA[#{javascript:if (eventBean.getEvent().isEditable()) {
+	return "input-group";
+}}]]></xp:this.styleClass>
+				<xp:inputText
+					id="inpEventTime"
+					title="${strings.label_time_title}"
+					value="#{eventBean.event.time}"
+					disabled="#{!eventBean.event.editable}">
+					<xp:this.attrs>
+						<xp:attr
+							name="placeholder"
+							value="${strings.label_time_ph}" />
+						<xp:attr
+							name="aria-describedby"
+							value="timeHelp" />
+					</xp:this.attrs>
+				</xp:inputText>
+				<xp:panel
+					rendered="#{javascript:eventBean.getEvent().isEditable()}">
+					<div
+						class="input-group-addon"
+						data-target="#eventTime"
+						data-toggle="datetimepicker">
+						<span class="input-group-text">
+							<i
+								class="fa fa-clock-o"
+								aria-hidden="true" />
+						</span>
+					</div>
+				</xp:panel>
+			</xp:panel>
+			<xp:panel
+				rendered="#{javascript:eventBean.getEvent().isEditable()}">
+				<xp:scriptBlock
+					id="scriptBlockTime"
+					rendered="#{eventBean.event.editable}">
+					<xp:this.value><![CDATA[
+		$(document).ready(
+			function(){
+				$('#eventTime').datetimepicker({
+		   			format: 'HH:mm',
+		    		stepping: 5
+		  		});		
+		});]]></xp:this.value>
+				</xp:scriptBlock>
+				<small
+					id="timeHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_time_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+
+		<div class="form-group">
+			<label for="evPlace"><xp:text value="${strings.label_location}" /></label>
+			<xp:inputText
+				id="inpEventPlace"
+				title="${strings.label_location_title}"
+				value="#{eventBean.event.location}"
+				disabled="#{!eventBean.event.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_location_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="placeHelp" />
+				</xp:this.attrs>
+			</xp:inputText>
+			<xp:panel
+				rendered="#{javascript:eventBean.getEvent().isEditable()}">
+				<small
+					id="placeHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_location_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+
+		<div class="form-group">
+			<label for="evPlace"><xp:text value="${strings.label_organizer}" /></label>
+			<xp:inputText
+				id="inpEventOrganizer"
+				title="${strings.label_organizer_title}"
+				disabled="true">
+				<xp:this.value><![CDATA[${javascript:try {
+	var nam:NotesName = session.createName(eventBean.getEvent().getCreator());
+	return nam.getCommon();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.value>
+			</xp:inputText>
+		</div>
+
+		<div class="form-group">
+			<label for="evPlace"><xp:text value="${strings.label_information}" /></label>
+			<xp:inputTextarea
+				id="inpEventInfo"
+				title="${strings.label_information_event_title}"
+				cols="5"
+				value="#{eventBean.event.information}"
+				disabled="#{!eventBean.event.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_information_event_title}" />
+					<xp:attr
+						name="aria-describedby"
+						value="infoHelp" />
+				</xp:this.attrs>
+			</xp:inputTextarea>
+			<xp:panel
+				rendered="#{javascript:eventBean.getEvent().isEditable()}">
+				<small
+					id="infoHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_information_event_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+		<xp:button
+			value="${strings.btn_edit}"
+			id="btnEdit">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	if (!eventBean.getEvent().isEditable()) {
+		var canEdit = utilityBean.canEdit(database.getFilePath(),eventBean.getEvent().getUnid());	
+		if (canEdit && eventBean.getEvent().getStatus().equals("new")) {
+			visible = true;
+		}
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+			<i
+				class="fa fa-pencil"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:eventBean.getEvent().setEditable(true);}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		<xp:button
+			value="${strings.btn_update}"
+			id="btnSave"
+			rendered="#{eventBean.event.editable}">
+			<i
+				class="fa fa-floppy-o"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:try {
+	if (eventBean.save()) {
+		context.redirectToPage("events")
+	} else {
+		getComponent("dlgFailure").show()
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		<xp:button
+			value="${strings.btn_delete}"
+			id="btnDelete"
+			rendered="#{eventBean.event.editable}">
+			<i
+				class="fa fa-trash-o"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:getComponent("dlgDelete").show();}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+
+		<xp:button
+			value="${strings.btn_reg_open}"
+			id="btnRegOpen"
+			styleClass="btn-success">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	visible = false;
+	var editable = eventBean.getEvent().isEditable();
+	var isAdmin = jsfUtils.hasRole("Administrator");
+	var isOrganizer = session.getEffectiveUserName().equals(eventBean.getEvent().getCreator());
+	var status = eventBean.getEvent().getStatus();
+	var canEdit = utilityBean.canEdit(database.getFilePath(),eventBean.getEvent().getUnid());	
+	if (!editable && (status.equals("new")) && (isOrganizer || isAdmin) && canEdit) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+			<i
+				class="fa fa-user-plus"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:try {
+	eventBean.getEvent().setStatus("open");
+	if (eventBean.save()) {
+		//context.redirectToPage("events")
+		getComponent("dlgRegistrationOpen").show();
+	} else {
+		getComponent("dlgFailure").show()
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+
+		<xp:button
+			value="${strings.btn_reg_close}"
+			id="btnRegClose">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	visible = false;
+	var editable = eventBean.getEvent().isEditable();
+	var isAdmin = jsfUtils.hasRole("Administrator");
+	var isOrganizer = session.getEffectiveUserName().equals(eventBean.getEvent().getCreator());
+	var status = eventBean.getEvent().getStatus();
+	var canEdit = utilityBean.canEdit(database.getFilePath(),eventBean.getEvent().getUnid());	
+	if (!editable && (null != status && status.equals("open")) && (isOrganizer || isAdmin) && canEdit) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+			<i
+				class="fa fa-lock"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:try {
+	eventBean.getEvent().setStatus("closed");
+	if (eventBean.save()) {
+		context.redirectToPage("events")
+	} else {
+		getComponent("dlgFailure").show();
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		<xp:panel id="pnlStartStop">
+			<xp:button
+				value="${strings.btn_event_start}"
+				styleClass="btn-success"
+				id="btnEventStart">
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	visible = false;
+	var editable = eventBean.getEvent().isEditable();
+	var isAdmin = jsfUtils.hasRole("Administrator");
+	var isOrganizer = session.getEffectiveUserName().equals(eventBean.getEvent().getCreator());
+	var status = eventBean.getEvent().getStatus();
+	var canEdit = utilityBean.canEdit(database.getFilePath(),eventBean.getEvent().getUnid());	
+	if (!editable && (null != status && status.equals("closed") && !status.equals("running")) && (isOrganizer || isAdmin) && canEdit) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+				<i
+					class="fa fa-play"
+					aria-hidden="true">
+				</i>
+				&#160;
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	eventBean.getEvent().setStatus("running");
+	if (eventBean.save()) {
+		//context.redirectToPage("events")
+	} else {
+		getComponent("dlgFailure").show();
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:button
+				value="${strings.btn_event_stop}"
+				styleClass="btn-danger"
+				id="btnEventStop">
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	visible = false;
+	var editable = eventBean.getEvent().isEditable();
+	var isAdmin = jsfUtils.hasRole("Administrator");
+	var isOrganizer = session.getEffectiveUserName().equals(eventBean.getEvent().getCreator());
+	var status = eventBean.getEvent().getStatus();
+	var canEdit = utilityBean.canEdit(database.getFilePath(),eventBean.getEvent().getUnid());	
+	if (!editable && (null != status && status.equals("running")) && (isOrganizer || isAdmin) && canEdit) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+				<i
+					class="fa fa-stop"
+					aria-hidden="true">
+				</i>
+				&#160;
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	eventBean.getEvent().setStatus("ended");
+	if (eventBean.save()) {
+		//context.redirectToPage("events")
+	} else {
+		getComponent("dlgFailure").show();
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:panel
+				styleClass="bg-info"
+				tagName="p">
+				<xp:text value="${strings.event_ended_info}" />
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var status = eventBean.getEvent().getStatus();
+	if (null != status && status.equals("ended")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+			</xp:panel>
+		</xp:panel>	
+
+		<xp:panel
+			rendered="#{javascript:return (null != eventBean.getEvent().getStatus())}"
+			id="pnlParticipants">
+			<h2><xp:text value="${strings.header_participants}" />&#160;<span class="badge">
+	<xp:text>
+		<xp:this.value><![CDATA[#{javascript:var coll = subscriptionBean.getSubscriptions();
+return coll.length;}]]></xp:this.value>
+		<xp:this.converter>
+			<xp:convertNumber
+				type="number"
+				integerOnly="true">
+			</xp:convertNumber>
+		</xp:this.converter>
+	</xp:text></span></h2>
+			<xp:button
+				value="#{strings.btn_signup}"
+				title="#{strings.btn_sign_up_title}"
+				styleClass="btn btn-primary"
+				id="btnRegRunner">
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	visible = false;
+	var canCreate = appBean.canCreateDocuments();
+	var editable = eventBean.getEvent().isEditable();
+	var isAdmin = jsfUtils.hasRole("Administrator");
+	var isOrganizer = session.getEffectiveUserName().equals(eventBean.getEvent().getCreator());
+	var status = eventBean.getEvent().getStatus();
+	var canEdit = utilityBean.canEdit(database.getFilePath(),eventBean.getEvent().getUnid());	
+	if (!editable && (null != status && status.equals("open")) && (isOrganizer || isAdmin) && canEdit && canCreate) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.rendered>
+				<i
+					class="fa fa-sign-language"
+					aria-hidden="true">
+				</i>
+				&#160;
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	runnerBean.loadCandidates();
+	var coll = runnerBean.getRunners();
+	viewScope.put("coll",coll);
+	getComponent("dlgPickRunner").show();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th scope="col"><xp:text value="${strings.th_name}" /></th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+						<th scope="col"><xp:text value="${strings.th_target}" /></th>
+						<th scope="col"><xp:text value="${strings.th_registered}" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<xp:repeat
+						var="obj"
+						indexVar="idx"
+						id="rpt"
+						value="#{javascript:subscriptionBean.getSubscriptions();}">
+						<xp:this.rows><![CDATA[#{javascript:var coll = subscriptionBean.getSubscriptions();
+return coll.length;}]]></xp:this.rows>
+						<tr>
+							<td scope="row">
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:obj["runner"]}]]></xp:this.value>
+								</xp:text>								
+							</td>
+							
+							<td>
+							<i class="fa fa-user" aria-hidden="true"></i>&#160;
+							<xp:link
+								title="${strings.link_title_runner_profile}"
+								target="_blank"
+								text="${strings.link_title_runner_profile}">
+								<xp:this.value><![CDATA[#{javascript:return "runner.xsp?unid=" + obj["runnerUnid"]}]]></xp:this.value>
+							</xp:link>
+							</td>
+							<td>
+							<i class="fa fa-tachometer" aria-hidden="true"></i>&#160;
+							<xp:link
+								title="${strings.link_subscription}"
+								target="_blank"
+								text="${strings.link_subscription}">
+								<xp:this.value><![CDATA[#{javascript:return "subscription.xsp?unid=" + obj["UNID"]}]]></xp:this.value>
+							</xp:link>
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:obj["time"]}]]></xp:this.value>
+								</xp:text>	
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:obj["created"]}]]></xp:this.value>
+								</xp:text>
+							</td>
+						</tr>
+					</xp:repeat>
+				</tbody>
+			</table>
+		</xp:panel>
+	</div>
+	
+	<xe:dialog
+		id="dlgDelete"
+		title="#{strings.dlg_confirmation_title}">
+		<xe:dialogContent id="dialogContent1">
+			<div>
+				<p><xp:text value="${strings.dlg_confirmation_text}" /></p>
+			</div>
+		</xe:dialogContent>
+		<xe:dialogButtonBar id="dialogButtonBar1">
+			<xp:button
+				id="btnConfirm"
+				value="#{strings.btn_delete}"
+				styleClass="btn-warning">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	if (true == eventBean.remove()) {
+		getComponent("dlgDelete").hide();
+		context.redirectToPage("events");
+	} 
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:button
+				id="btnCancel"
+				value="#{strings.btn_cancel}">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:getComponent("dlgDelete").hide();}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+		</xe:dialogButtonBar>
+	</xe:dialog>
+	<xe:dialog
+		id="dlgRegistrationOpen"
+		title="#{strings.dlg_reg_open_title}">
+		<xe:dialogContent id="dialogContent2">
+			<xp:panel>
+				<p><xp:text value="${strings.dlg_reg_open_text}" /></p>
+			</xp:panel>
+		</xe:dialogContent>
+		<xe:dialogButtonBar id="dialogButtonBar2">
+			<xp:button
+				value="#{strings.btn_show_events}"
+				styleClass="btn-primary"
+				id="btnShow">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action>
+						<xp:openPage name="/events.xsp"></xp:openPage>
+					</xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:button
+				value="#{strings.btn_start_reg}"
+				id="btnStartReg"
+				rendered="#{javascript:return appBean.canCreateDocuments();}">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	runnerBean.loadCandidates();
+	var coll = runnerBean.getRunners();
+	viewScope.put("coll",coll);
+	getComponent("dlgRegistrationOpen").hide();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.action>
+					<xp:this.onComplete><![CDATA[
+XSP.openDialog("#{id:dlgPickRunner}")]]></xp:this.onComplete>
+				</xp:eventHandler>
+			</xp:button>
+		</xe:dialogButtonBar>
+	</xe:dialog>
+	<xc:ccDlgPickRunner></xc:ccDlgPickRunner>
+</xp:view>

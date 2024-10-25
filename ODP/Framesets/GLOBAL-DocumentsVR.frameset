@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frameset xmlns="http://www.lotus.com/dxl" name="GLOBAL-DocumentsVR" alias="$fs-notes-documents-vr" hide="web" publicaccess="false" language="en" comment="document preview section on the bottom" columns="206px 75" spacing="0px" borderwidth="1px" bordercolor="silver">
+<frame name="NotesMenu" targetframe="NotesView" border3d="false" scrolling="never" initialfocus="true">
+<bordercaption show="arrows" align="right" justify="center" open="280px" bgcolor="#add305">
+<code event="value">
+<formula>"Menu"</formula>
+</code>
+<font size="8pt" name="multilingual"/>
+</bordercaption>
+<namedelementlink type="form" name="$f-global-menu-main"/>
+</frame>
+<frameset rows="61 39" spacing="0px">
+<frame name="NotesView" targetframe="NotesPreview" border3d="false">
+<namedelementlink type="form" name="$p-global-start"/>
+</frame>
+<frame name="NotesPreview" border3d="false">
+<bordercaption show="caption arrows" justify="center" open="40%" bgcolor="#089ce2">
+<code event="value">
+<formula>"Preview"</formula>
+</code>
+<font size="8pt" name="multilingual"/>
+</bordercaption>
+</frame>
+</frameset>
+</frameset>

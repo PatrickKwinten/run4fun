@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<outline xmlns="http://www.lotus.com/dxl" name="Global Box Menu" alias="$ol-box-menu" publicaccess="false">
+<outlineentry label="Events" type="namedelementlink">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="events"/>
+</outlineentry>
+<outlineentry label="Runners" type="namedelementlink">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="runners"/>
+</outlineentry>
+<outlineentry label="Subscriptions" type="namedelementlink">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="subscriptions"/>
+</outlineentry>
+<outlineentry label="Lapses" type="namedelementlink">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="lapses"/>
+</outlineentry>
+</outline>

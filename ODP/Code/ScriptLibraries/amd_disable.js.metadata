@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<note xmlns="http://www.lotus.com/dxl" class="filter">
+<item name="$POID">
+<datetime dst="true">20180911T135904,32+02</datetime>
+</item>
+<item name="$TITLE" sign="true">
+<text>amd_disable</text>
+</item>
+<item name="$Flags">
+<text>h534Q</text>
+</item>
+<item name="$PublicAccess" sign="true">
+<text>1</text>
+</item>
+</note>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view xmlns="http://www.lotus.com/dxl" name="Admin\By Form" showinmenu="false" allowdocselection="true" publicaccess="false" unreadmarks="standard" onopengoto="lastopened" onrefresh="displayindicator" headers="beveled" opencollapsed="true" showresponsehierarchy="true" showmargin="true" shrinkrows="true" extendlastcolumn="false" showhierarchies="false" unreadcolor="#e8472f" rowlinecount="9" headerlinecount="1" rowspacing="1.25" haslinkcolumn="true" bgcolor="white" altrowcolor="#efefef" totalscolor="#c962a5" headerbgcolor="#efefef" boldunreadrows="true" evaluateactions="false" allownewdocuments="false" allowcustomizations="false" hidemarginborder="false" marginwidth="0px" marginbgcolor="white" gridstyle="dot" gridcolor="silver" uniquekeys="false" initialbuildrestricted="false" noemptycategories="true">
+<code event="selection">
+<formula>SELECT @All</formula>
+</code>
+<actionbar borderstyle="none" useappletinbrowser="true" bgcolor="#ffa50c" bordercolor="black">
+<actionbarstyle height="4.7500ex">
+<font size="9pt" name="multilingual"/>
+</actionbarstyle>
+<actionbuttonstyle margintype="fixed" margin="5" bgcolor="none" displayborder="never"/>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>
+<border style="solid" width="0px 0px 1px" color="#364350"/>
+<action title="Categori_ze" showinbar="false" systemcommand="categorize"/>
+<action title="Move to trash">
+<imageref name="trash.gif"/>
+<code event="click">
+<formula>@Command( [EditClear] )</formula>
+</code>
+</action>
+<action title="_Edit Document" showinbar="false" systemcommand="edit"/>
+<action title="Send Docu_ment" showinmenu="false" showinbar="false" systemcommand="send"/>
+<action title="_Forward" showinbar="false" systemcommand="forward"/>
+<action title="_Move to Folder..." showinbar="false" systemcommand="movetofolder"/>
+<action title="_Remove from Folder..." showinbar="false" systemcommand="removefromfolder"/>
+<action title="(Global: SearchBar)" icon="148" showinmenu="false" hide="web mobile" onlyiconinbar="true" align="right">
+<code event="click">
+<formula>@Command([ViewShowSearchBar])</formula>
+</code>
+<code event="label">
+<formula>"Open/Close View Search"</formula>
+</code>
+</action>
+</actionbar>
+<column sort="ascending" resort="ascending" hidedetailrows="false" listseparator="comma" itemname="Form" width="9" resizable="true" separatemultiplevalues="true" sortnoaccent="true" sortnocase="true" showaslinks="false" categorized="true" twisties="true">
+<font size="12pt" color="#00a1e0" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Form">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<datetimeformat show="date" date="yearmonthday" fourdigityearfor21stcentury="true" time="hourminutesecond" zone="never" dateformat="yearmonthdayweekday" dayformat="twodigitday" monthformat="twodigitmonth" yearformat="fourdigityear" weekdayformat="shortname" dateseparator1="-" dateseparator2="-" dateseparator3=" " timeseparator=":" timeformat24="true" preference="usersetting"/>
+<numberformat format="general" punctuated="false" parens="false" percent="false" bytes="false"/>
+<twistieimage>
+<imageref database="0000000000000000" name="twisties.gif"/>
+</twistieimage>
+</column>
+<column hidedetailrows="false" listseparator="comma" itemname="$168" width="14.7500" resizable="true" separatemultiplevalues="false" sortnoaccent="true" sortnocase="true" showaslinks="false" twisties="true">
+<font size="12pt" color="#4f4f4f" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Created">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<datetimeformat show="datetime" date="yearmonthday" fourdigityearfor21stcentury="true" time="hourminutesecond" zone="never" dateformat="yearmonthdayweekday" dayformat="twodigitday" monthformat="twodigitmonth" yearformat="fourdigityear" weekdayformat="shortname" dateseparator1="-" dateseparator2="-" dateseparator3=" " timeseparator=":" timeformat24="true" preference="usersetting"/>
+<code event="value">
+<formula>@Created</formula>
+</code>
+</column>
+<column hidedetailrows="false" listseparator="comma" itemname="$18" width="14.7500" resizable="true" separatemultiplevalues="false" sortnoaccent="true" sortnocase="true" showaslinks="false" twisties="true">
+<font size="12pt" color="#4f4f4f" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Created by">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<datetimeformat show="datetime" date="yearmonthday" fourdigityearfor21stcentury="true" time="hourminutesecond" zone="never" dateformat="yearmonthdayweekday" dayformat="twodigitday" monthformat="twodigitmonth" yearformat="fourdigityear" weekdayformat="shortname" dateseparator1="-" dateseparator2="-" dateseparator3=" " timeseparator=":" timeformat24="true" preference="usersetting"/>
+<code event="value">
+<formula>@Name([CN]; @Author)</formula>
+</code>
+</column>
+</view>

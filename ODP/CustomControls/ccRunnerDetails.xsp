@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<div class="container main-content">
+		<h1>
+			<xp:text value="${strings.header_runner}" />&#160;
+			<xp:panel
+				tagName="small"
+				id="pnlSmall"
+				rendered="#{javascript:!runnerBean.getRunner().isEditable()}">
+				<xp:text value="#{runnerBean.runner.name}" />
+			</xp:panel>
+		</h1>
+		<xp:panel
+			rendered="#{javascript:appBean.isAnonymous();}">						
+        <div class="row">
+        	<div class="col-md-12">
+        	<p class="bg-info"><xp:text value="${strings.runner_anonymous}" /></p>
+        	</div>
+        </div>
+        </xp:panel>
+		
+		<xp:panel
+			styleClass="form-group"
+			rendered="#{runnerBean.runner.editable}">
+			<label for="evPlace">
+				<xp:text value="${strings.label_name}" />
+			</label>
+			<xp:inputText
+				id="inputName"
+				title="${strings.label_name_title}"
+				value="#{runnerBean.runner.name}"
+				disabled="#{!runnerBean.runner.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_name_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="placeHelp" />
+				</xp:this.attrs>
+			</xp:inputText>
+			<xp:panel
+				rendered="#{javascript:runnerBean.getRunner().isEditable()}">
+				<small
+					id="small1"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_name_helper}" />
+				</small>
+			</xp:panel>
+		</xp:panel>
+
+		<div class="form-group">
+			<label for="evEmail"><xp:text value="${strings.label_email}" /></label>
+			<xp:inputText
+				id="inpRunnerEmail"
+				title="${strings.label_email_title}"
+				value="#{runnerBean.runner.email}"
+				disabled="#{!runnerBean.runner.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_email_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="placeHelp" />
+				</xp:this.attrs>
+			</xp:inputText>
+			<xp:panel
+				rendered="#{javascript:runnerBean.getRunner().isEditable()}">
+				<small
+					id="placeHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_email_helper}" />
+				</small>
+			</xp:panel>
+		</div>		
+
+		<div class="form-group">
+			<label for="evPlace"><xp:text value="${strings.label_information}" /></label>
+			<xp:inputTextarea
+				id="inpRunnerInfo"
+				title="${strings.label_information_title}"
+				cols="5"
+				value="#{runnerBean.runner.information}"
+				disabled="#{!runnerBean.runner.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_information_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="infoHelp" />
+				</xp:this.attrs>
+			</xp:inputTextarea>
+			<xp:panel
+				rendered="#{javascript:runnerBean.getRunner().isEditable()}">
+				<small
+					id="infoHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_information_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+		
+		<div class="form-group">
+			<label for="evPlace"><xp:text value="${strings.label_status}" /></label>
+			<xp:panel
+				rendered="#{javascript:runnerBean.getRunner().isEditable()}">
+			<xp:radioGroup
+				id="inpRunnerStatus"
+				value="#{runnerBean.runner.status}"
+				title="${strings.label_status_title}"
+				defaultValue="active"
+				disabled="#{!runnerBean.runner.editable}">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_status_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="placeHelp" />
+				</xp:this.attrs>
+				<xp:selectItem
+					itemLabel="active"
+					itemValue="active">
+				</xp:selectItem>
+				<xp:selectItem
+					itemLabel="inactive"
+					itemValue="inactive">
+				</xp:selectItem>
+			</xp:radioGroup>
+			</xp:panel>
+			<xp:panel
+				rendered="#{javascript:!runnerBean.getRunner().isEditable()}">
+				<xp:div
+					styleClass="form-control-fake">
+					<xp:text value="#{runnerBean.runner.status}"></xp:text>
+				</xp:div>
+			</xp:panel>	
+			<xp:panel
+				rendered="#{javascript:runnerBean.getRunner().isEditable()}">
+				<small
+					id="small2"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_status_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+		
+		<xp:button
+			value="${strings.btn_edit}"
+			id="btnEdit">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	if (!runnerBean.getRunner().isEditable()) {
+		var canEdit = utilityBean.canEdit(database.getFilePath(),runnerBean.getRunner().getUnid());	
+		if (canEdit) {
+			visible = true;
+		}
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccRunnerDetails", null, null);
+}}]]></xp:this.rendered>
+			<i
+				class="fa fa-pencil"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:runnerBean.getRunner().setEditable(true);}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		<xp:button
+			value="${strings.btn_update}"
+			id="btnSave"
+			rendered="#{runnerBean.runner.editable}">
+			<i
+				class="fa fa-floppy-o"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:try {
+	if (runnerBean.save()) {
+		context.redirectToPage("runners")
+	} else {
+		getComponent("dlgFailure").show();
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		<xp:button
+			value="${strings.btn_delete}"
+			id="btnDelete"
+			rendered="#{runnerBean.runner.editable}">
+			<i
+				class="fa fa-trash-o"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:getComponent("dlgDelete").show();}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+	</div>
+	<xe:dialog
+		id="dlgDelete"
+		title="#{strings.dlg_confirmation_title}">
+		<xe:dialogContent id="dialogContent1">
+			<div>
+				<p>
+					<xp:text value="${strings.dlg_confirmation_text_runner}" />
+				</p>
+			</div>
+		</xe:dialogContent>
+		<xe:dialogButtonBar id="dialogButtonBar1">
+			<xp:button
+				id="btnConfirm"
+				value="#{strings.btn_delete}"
+				styleClass="btn-warning">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	if (true == runnerBean.remove()) {
+		getComponent("dlgDelete").hide();
+		context.redirectToPage("runners");
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:button
+				id="btnCancel"
+				value="#{strings.btn_cancel}">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:getComponent("dlgDelete").hide()}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+		</xe:dialogButtonBar>
+	</xe:dialog>
+
+</xp:view>

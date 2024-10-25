@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view xmlns="http://www.lotus.com/dxl" name="Trash" showinmenu="false" deleteddocs="true" allowdocselection="true" publicaccess="false" unreadmarks="standard" onopengoto="lastopened" onrefresh="displayindicator" headers="beveled" opencollapsed="false" showresponsehierarchy="true" showmargin="true" shrinkrows="true" extendlastcolumn="true" showhierarchies="false" unreadcolor="black" rowlinecount="9" headerlinecount="1" rowspacing="1.25" haslinkcolumn="true" bgcolor="white" altrowcolor="#efefef" totalscolor="blue" headerbgcolor="#efefef" boldunreadrows="true" evaluateactions="false" allownewdocuments="false" allowcustomizations="true" hidemarginborder="false" marginwidth="0px 0px 1px" marginbgcolor="white" gridstyle="dot" gridcolor="silver" uniquekeys="false">
+<code event="selection">
+<formula>SELECT (@TextToNumber(@Version) &gt; 158)</formula>
+</code>
+<actionbar borderstyle="none" bgcolor="#add305" bordercolor="black">
+<actionbarstyle height="4.7500ex">
+<font size="9pt" name="multilingual"/>
+</actionbarstyle>
+<actionbuttonstyle margintype="fixed" margin="5" bgcolor="none" displayborder="never"/>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>
+<border style="solid" width="0px 0px 1px" color="#364350"/>
+<action title="Restore" icon="145">
+<code event="click">
+<formula>@Command([EditRestoreDocument])</formula>
+</code>
+</action>
+<action title="Restore All" icon="145">
+<code event="click">
+<formula>@Command([ToolsRunMacro];"(Restore All)")</formula>
+</code>
+</action>
+<action title="Delete permanently" icon="11">
+<code event="click">
+<formula>@Command([EditClear])</formula>
+</code>
+</action>
+<action title="(Global: SearchBar)" icon="148" showinmenu="false" hide="web mobile" onlyiconinbar="true" align="right">
+<code event="click">
+<formula>@Command([ViewShowSearchBar])</formula>
+</code>
+<code event="label">
+<formula>"Open/Close View Search"</formula>
+</code>
+</action>
+</actionbar>
+<column sort="descending" resort="ascending" hidedetailrows="false" listseparator="comma" itemname="$12" width="10.6250" resizable="true" separatemultiplevalues="false" sortnoaccent="true" sortnocase="true" showaslinks="false">
+<font size="12pt" color="#4f4f4f" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Date Modified">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<datetimeformat show="date" date="yearmonthday" fourdigityearfor21stcentury="true" time="hourminutesecond" zone="never" dateformat="yearmonthdayweekday" dayformat="twodigitday" monthformat="twodigitmonth" yearformat="fourdigityear" weekdayformat="shortname" dateseparator1="-" dateseparator2="-" dateseparator3=" " timeseparator=":" timeformat24="true" preference="usersetting"/>
+<numberformat format="general" punctuated="false" parens="false" percent="false" bytes="false"/>
+<code event="value">
+<formula>@If(!@IsResponseDoc;@Modified;"")</formula>
+</code>
+</column>
+<column hidedetailrows="false" listseparator="comma" itemname="$18" width="9.5000" resizable="true" separatemultiplevalues="false" sortnoaccent="true" sortnocase="true" showaslinks="false" twisties="true">
+<font size="12pt" color="#4f4f4f" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Created">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<datetimeformat show="datetime" date="yearmonthday" fourdigityearfor21stcentury="true" time="hourminutesecond" zone="never" dateformat="yearmonthdayweekday" dayformat="twodigitday" monthformat="twodigitmonth" yearformat="fourdigityear" weekdayformat="shortname" dateseparator1="-" dateseparator2="-" dateseparator3=" " timeseparator=":" timeformat24="true" preference="usersetting"/>
+<code event="value">
+<formula>@Created</formula>
+</code>
+<twistieimage>
+<imageref database="0000000000000000" name="twisties.gif"/>
+</twistieimage>
+</column>
+<column hidedetailrows="false" itemname="Form" width="11.5000" resizable="true" separatemultiplevalues="false" sortnoaccent="false" sortnocase="true" showaslinks="false">
+<font size="12pt" color="#4f4f4f" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Form">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<columnnamesformat showonline="true" columncontainsname="true" columnname="$onlineName" verticalorientation="top"/>
+</column>
+<column hidedetailrows="false" itemname="$25" width="11.5000" resizable="true" separatemultiplevalues="false" sortnoaccent="false" sortnocase="true" showaslinks="false">
+<font size="12pt" color="#4f4f4f" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<columnheader title="Created By">
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</columnheader>
+<columnnamesformat showonline="true" columncontainsname="true" columnname="$onlineName" verticalorientation="top"/>
+<code event="value">
+<formula>@Name([CN]; Na_From)</formula>
+</code>
+</column>
+</view>

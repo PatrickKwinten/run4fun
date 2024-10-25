@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+	<xp:this.resources>
+		<!-- <xp:styleSheet href="font-awesome/4.7.0/css/font-awesome.css" /> -->
+		<xp:headTag tagName="link" rendered="true" loaded="true">
+			<xp:this.attributes>
+				<xp:parameter name="rel" value="stylesheet" />
+				<xp:parameter name="type" value="text/css" />
+				<xp:parameter name="href">
+					<xp:this.value>
+	     					<![CDATA[#{javascript:return "font-awesome/4.7.0/css/font-awesome.min.css"}]]>
+					</xp:this.value>
+				</xp:parameter>
+			</xp:this.attributes>
+		</xp:headTag>
+	</xp:this.resources>
+	
+</xp:view>

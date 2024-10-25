@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:panel id="pnlPickRunner">
+		<xe:dialog
+			id="dlgPickRunner"
+			title="#{strings.dlg_pick_runner_title}"
+			styleClass="modal-large">
+			<xe:dialogContent id="dlgCnt">
+				<xp:panel id="pnlDlgCnt">
+					<div class="container-fluid">
+						<xp:panel id="pnlPick">
+							<xp:this.rendered><![CDATA[#{javascript:!viewScope.containsKey("eventUnid")}]]></xp:this.rendered>
+							<xp:panel>
+								<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var coll = viewScope.get("coll");
+	if (coll.length == 0) {
+		visible = true;
+	} 
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgPickRunner", null, null);
+}}]]></xp:this.rendered>
+								<xp:text
+									value="${strings.dlg_pick_runner_txt_no_runner}" />
+							</xp:panel>
+							<xp:panel>
+								<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var coll = viewScope.get("coll");
+	if (coll.length > 0) {
+		visible = true;
+	} 
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgPickRunner", null, null);
+}}]]></xp:this.rendered>
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">
+												<xp:text
+													value="${strings.th_name}" />
+											</th>
+											<th scope="col">
+												<xp:text
+													value="${strings.th_email}" />
+											</th>
+											<th scope="col">
+												<xp:text
+													value="${strings.th_registered}" />
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<xp:repeat
+											var="obj"
+											indexVar="idx"
+											id="rpt">
+											<xp:this.rows><![CDATA[#{javascript:var coll = viewScope.get("coll");
+return coll.length;}]]></xp:this.rows>
+											<xp:this.value><![CDATA[#{javascript:return viewScope.get("coll");}]]></xp:this.value>
+											<tr>
+												<th scope="row">
+													<xp:link
+														id="link1">
+														<xp:this.text><![CDATA[#{javascript:obj["name"]}]]></xp:this.text>
+														<xp:this.title><![CDATA[#{javascript:obj["name"]}]]></xp:this.title>
+														<xp:eventHandler
+															event="onclick"
+															submit="true"
+															refreshMode="partial"
+															refreshId="pnlDlgCnt">
+															<xp:this.action><![CDATA[#{javascript:try {
+	viewScope.put("eventUnid",eventBean.getEvent().getUnid());
+	viewScope.put("eventName",eventBean.getEvent().getName());
+	viewScope.put("runnerUnid",obj["UNID"]);
+	viewScope.put("runnerName",obj["name"]);
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgPickRunner", null, null);
+}}]]></xp:this.action>
+															<xp:this.onComplete><![CDATA[XSP.partialRefreshGet("#{id:pnlButtons}");]]></xp:this.onComplete>
+														</xp:eventHandler>
+													</xp:link>
+												</th>
+												<td>
+													<xp:text
+														value="#{obj.email}">
+													</xp:text>
+												</td>
+												<td>
+													<xp:text
+														value="#{obj.created}">
+													</xp:text>
+												</td>
+											</tr>
+										</xp:repeat>
+									</tbody>
+								</table>
+							</xp:panel>
+						</xp:panel>
+
+						<xp:panel id="pnlTarget">
+							<xp:this.rendered><![CDATA[#{javascript:viewScope.containsKey("eventUnid")}]]></xp:this.rendered>
+							<div class="form-group">
+								<label for="evTime">
+									<xp:text
+										value="#{strings.label_estimate}" />
+								</label>
+								<div
+									class="input-group"
+									id="lapseTime"
+									data-target-input="nearest">
+									<xp:inputText
+										styleClass="form-control datetimepicker-input"
+										id="inpEventTime"
+										value="#{viewScope.timelapse}"
+										autocomplete="off"
+										defaultValue="00:00"
+										title="#{strings.label_estimate_ph}">
+										<xp:this.attrs>
+											<xp:attr
+												name="placeholder"
+												value="#{strings.label_estimate_ph}" />
+											<xp:attr
+												name="data-target"
+												value="#eventTime" />
+											<xp:attr
+												name="aria-describedby"
+												value="timeHelp" />
+										</xp:this.attrs>
+									</xp:inputText>
+									<div
+										class="input-group-addon"
+										data-target="#lapseTime"
+										data-toggle="datetimepicker">
+										<span
+											class="input-group-text">
+											<i
+												class="fa fa-clock-o"
+												aria-hidden="true" />
+										</span>
+									</div>
+								</div>
+								<small
+									id="small1"
+									class="form-text text-muted">
+									<xp:text value="#{strings.label_estimate_helper}" />
+								</small>
+								<xp:scriptBlock id="scriptBlockTime">
+									<xp:this.value><![CDATA[
+				$(document).ready(
+					function(){
+						$('#lapseTime').datetimepicker({
+				   			format: 'mm:ss'
+				  		});		
+				});]]></xp:this.value>
+								</xp:scriptBlock>
+							</div>
+
+							<xp:panel styleClass="form-group">
+								<label for="evName"><xp:text value="#{strings.label_runner}" /></label>
+								<xp:inputText
+									id="inputText1"
+									title="#{strings.label_name_title}"
+									value="#{viewScope.runnerName}"
+									disabled="true">
+								</xp:inputText>
+							</xp:panel>
+							<xp:panel styleClass="form-group">
+								<label for="evName"><xp:text value="#{strings.label_event}" /></label>
+								<xp:inputText
+									id="inputEventName"
+									title="#{strings.label_event_title}"
+									value="#{viewScope.eventName}"
+									disabled="true">
+								</xp:inputText>
+							</xp:panel>
+						</xp:panel>
+					</div>
+				</xp:panel>
+			</xe:dialogContent>
+
+			<xe:dialogButtonBar id="dialogButtonBar1">
+				<xp:panel id="pnlButtons">
+					<xp:button
+						value="#{strings.btn_cancel}"
+						id="btnCancel">
+						<xp:eventHandler
+							event="onclick"
+							submit="true"
+							refreshMode="complete">
+							<xp:this.action><![CDATA[#{javascript:try {
+	viewScope.remove("eventUnid");
+	viewScope.remove("eventName");
+	viewScope.remove("runnerUnid");
+	viewScope.remove("runnerName");
+	getComponent("dlgPickRunner").hide();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgPickRunner", null, null);
+}}]]></xp:this.action>
+						</xp:eventHandler>
+					</xp:button>
+					<xp:button
+						id="btnSetTarget"
+						value="#{strings.btn_set_target}"
+						styleClass="btn-primary">
+						<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var candidates = false;
+	var candidate = viewScope.containsKey("eventUnid");
+	var coll = viewScope.get("coll");
+	if (coll.length > 0) {
+		candidates = true;
+	}
+	if (candidates && candidate) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgPickRunner", null, null);
+}}]]></xp:this.rendered>
+						<xp:eventHandler
+							event="onclick"
+							submit="true"
+							refreshMode="partial"
+							refreshId="pnlParticipants">
+							<xp:this.action><![CDATA[#{javascript:try {
+	subscriptionBean.create();
+	subscriptionBean.save();
+	viewScope.remove("eventUnid");
+	viewScope.remove("eventName");
+	viewScope.remove("runnerUnid");
+	viewScope.remove("runnerName");
+	subscriptionBean.loadObjects();
+	getComponent("dlgPickRunner").hide();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgPickRunner", null, null);
+}}]]></xp:this.action>
+						</xp:eventHandler>
+					</xp:button>
+				</xp:panel>
+			</xe:dialogButtonBar>
+		</xe:dialog>
+	</xp:panel>
+</xp:view>

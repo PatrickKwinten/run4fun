@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+	
+	<footer class="container-fluid">
+		<br />
+		<br />
+		<section style="background-color:#393939;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<h5>
+							<xp:text value="${strings.layout_events}"></xp:text></h5>
+						<div>
+							<xp:link
+								text="${strings.layout_events_all}"
+								value="/events.xsp"
+								title="${strings.layout_events_all}"
+								styleClass="lnkFooter">
+							</xp:link>
+						</div>
+						<div>
+							<xp:link
+								text="${strings.layout_events_forward}"
+								value="/events.xsp?q=forward"
+								title="${strings.layout_events_forward}"
+								styleClass="lnkFooter">
+							</xp:link></div>
+						<div>
+							<xp:link
+								text="${strings.layout_events_past}"
+								value="/events.xsp?q=past"
+								title="${strings.layout_events_past}"
+								styleClass="lnkFooter">
+							</xp:link></div>		
+					</div>
+					<div class="col-md-4">
+						<h5>
+							<xp:text
+								value="${strings.layout_runners}">
+							</xp:text></h5>
+						<div>
+							<xp:link
+								text="${strings.layout_runners_active}"
+								value="/runners.xsp?q=active"
+								title="${strings.layout_runners_active}"
+								styleClass="lnkFooter">
+							</xp:link></div>
+						<div>
+							<xp:link
+								text="${strings.layout_runners_inactive}"
+								value="/runners.xsp?q=inactive"
+								title="${strings.layout_runners_inactive}"
+								styleClass="lnkFooter">
+							</xp:link></div>
+						<div>
+							<xp:link
+								text="${strings.layout_runners_all}"
+								value="/runners.xsp?q="
+								title="${strings.layout_runners_all}"
+								styleClass="lnkFooter">
+							</xp:link></div>		
+					</div>
+					<div class="col-md-4">
+						<h5>
+							<xp:text value="#{strings.layout_handy}"></xp:text></h5>
+						<div>
+							<xp:link
+								text="${strings.layout_utilities}"
+								id="lnkUtilties"
+								title="${strings.layout_utilities}"
+								styleClass="lnkFooter">
+								<xp:eventHandler
+									event="onclick"
+									submit="true"
+									refreshMode="complete"
+									immediate="true">
+									<xp:this.action><![CDATA[#{javascript:getComponent("dlgUtils").show();}]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:link></div>
+						<div>
+							<xp:link
+								text="${strings.layout_dump_object}"
+								id="linkDump"
+								title="${strings.layout_dump_object}"
+								styleClass="lnkFooter">
+								<xp:eventHandler
+									event="onclick"
+									submit="true"
+									refreshMode="complete"
+									immediate="true">
+									<xp:this.action><![CDATA[#{javascript:getComponent("dlgBDebug").show();}]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:link></div>
+						<div>
+							<xp:link
+								id="link2"
+								text="${strings.link_english}"
+								title="${link_english}"
+								styleClass="lnkFooter">
+								<xp:eventHandler
+									event="onclick"
+									submit="true"
+									refreshMode="complete">
+									<xp:this.action><![CDATA[#{javascript:context.setLocale(null);
+context.reloadPage(); }]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:link>
+							/
+							<xp:link
+								id="link1"
+								text="${strings.link_dutch}"
+								title="${strings.link_dutch}"
+								styleClass="lnkFooter">
+								<xp:eventHandler
+									event="onclick"
+									submit="true"
+									refreshMode="complete">
+									<xp:this.action><![CDATA[#{javascript:context.setLocaleString("nl"); 
+context.reloadPage(); }]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:link></div>
+						<div>
+							<xp:link
+								id="link3"
+								text="${strings.link_readme}"
+								title="${strings.link_readme}"
+								styleClass="lnkFooter">
+								<xp:eventHandler
+									event="onclick"
+									submit="true"
+									refreshMode="complete"
+									immediate="true">
+									<xp:this.action><![CDATA[#{javascript:getComponent("dlgReadme").show();}]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:link></div>		
+					</div>					
+				</div>
+			</div>
+		</section>
+		<section style="background-color:#2f2f2f;padding: 15px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-5">
+						<span>
+							<xp:text value="${strings.footer}" />
+						</span>
+					</div>
+					<div class="col-md-7">
+						<div class="pull-right">
+							<a
+								href="https://x.com/patrickkwinten"
+								class="soc-icon lnkFooter">
+								<i class="fa fa-twitter" />
+							</a>
+							&#160;
+							<a href="https://www.linkedin.com/in/patrickkwinten/" class="lnkFooter">
+								<i class="fa fa-linkedin" />
+							</a>
+							&#160;
+							<a href="https://github.com/PatrickKwinten" class="lnkFooter">
+								<i class="fa fa-github" />
+							</a>
+							&#160;
+							<a href="https://stackexchange.com/users/1879268/patrick-kwinten" class="lnkFooter">
+								<i
+									class="fa fa-stack-overflow"
+									aria-hidden="true" />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+	</footer>
+</xp:view>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:eventBean.loadEvents();}]]></xp:this.beforePageLoad>
+	<xc:ccLayout>
+		<xp:this.facets>
+			<xc:ccEvents xp:key="facetMain"></xc:ccEvents>
+			<xc:ccFooter xp:key="facetFooter"></xc:ccFooter>
+		</xp:this.facets>
+	</xc:ccLayout>
+</xp:view>

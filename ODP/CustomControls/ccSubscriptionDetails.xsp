@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:var lapses = subscriptionBean.getLapses(subscriptionBean.getSubscription());
+viewScope.put("lapses",lapses);
+eventBean.loadEvent(subscriptionBean.getSubscription().getEventUnid());}]]></xp:this.beforePageLoad>
+	<div class="container main-content">
+		<div class="row">
+			<div class="col-md-9">
+				<h1>
+					<xp:text value="${strings.header_subscription}" />&#160;
+					<xp:panel
+						tagName="small"
+						id="panel1">
+						<xp:text
+							value="#{subscriptionBean.subscription.runner}" />
+					</xp:panel>
+				</h1>
+			</div>
+			<div class="col-md-3">
+				<h1 class="pull-right">
+					&#160;
+					<small>
+						<xp:panel
+							tagName="span"
+							styleClass="#{javascript:return eventBean.eventStyleClass(eventBean.getEvent());}">
+							<xp:this.title><![CDATA[#{javascript:try {
+	var status = eventBean.getEvent().getStatus();
+	if (null == status) {
+		return "???";
+	} else {
+		return strings["event_status_" + status];
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.title>
+							<xp:text
+								escape="false"
+								value="#{javascript:return eventBean.eventIcon(eventBean.getEvent());}">
+							</xp:text>
+							&#160;
+							<xp:text>
+								<xp:this.value><![CDATA[#{javascript:try {
+	var status = eventBean.getEvent().getStatus();
+	if (null == status) {
+		return "???";
+	} else {
+		return strings["event_status_" + status];
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.value>
+							</xp:text>
+						</xp:panel>
+
+					</small>
+				</h1>
+			</div>
+		</div>
+		<xp:panel rendered="#{javascript:appBean.isAnonymous();}">
+			<div class="row">
+				<div class="col-md-12">
+					<p class="bg-info">
+						<xp:text value="${strings.subscription_anonymous}" />
+					</p>
+				</div>
+			</div>
+		</xp:panel>
+
+		<xp:panel styleClass="form-group">
+			<label for="evName"><xp:text value="${strings.label_event}" /></label>
+			<xp:inputText
+				id="inputText1"
+				title="${strings.label_event_title}"
+				value="#{subscriptionBean.subscription.event}"
+				disabled="true">
+			</xp:inputText>
+		</xp:panel>
+		
+		<xp:panel styleClass="form-group">
+			<label for="evName"><xp:text value="${strings.label_name}" /></label>
+			<xp:panel>
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	if (null != subscriptionBean.getSubscription() && null != subscriptionBean.getSubscription().getUnid()) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+				<div class="input-group">
+					<xp:inputText
+						id="inputName"
+						title="${strings.label_name_title}"
+						value="#{subscriptionBean.subscription.runner}"
+						disabled="true">
+					</xp:inputText>
+					<div class="input-group-addon">
+						<xp:link
+							title="${strings.link_notify_runner}"
+							id="lnkNotify">
+							<i
+								class="fa fa-paper-plane-o"
+								aria-hidden="true">
+							</i>
+							<xp:eventHandler
+								event="onclick"
+								submit="true"
+								refreshMode="partial"
+								refreshId="pnlDlgNotifyRunner">
+								<xp:this.action><![CDATA[#{javascript:try {
+	var runnerUnid = subscriptionBean.getSubscription().getRunnerUnid();
+	runnerBean.loadRunnerByUnid(runnerUnid);
+	getComponent("dlgNotifyRunner").show();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:link>
+					</div>
+				</div>
+			</xp:panel>
+
+			<xp:panel>
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	if (null == subscriptionBean.getSubscription() || subscriptionBean.getSubscription().getUnid().equals("")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+				<xp:inputText
+					id="inputText2"
+					title="${strings.label_name_title}"
+					value="#{subscriptionBean.subscription.runner}"
+					disabled="true">
+				</xp:inputText>
+			</xp:panel>
+		</xp:panel>
+
+		<div class="form-group">
+			<label for="evTime"><xp:text value="${strings.label_target}" /></label>
+			<xp:panel>
+				<xp:this.attrs>
+					<xp:attr
+						name="data-target-input"
+						value="nearest">
+					</xp:attr>
+					<xp:attr
+						name="id"
+						value="eventTime">
+					</xp:attr>
+				</xp:this.attrs>
+				<xp:this.styleClass><![CDATA[#{javascript:if (subscriptionBean.getSubscription().isEditable()) {
+	return "input-group";
+}}]]></xp:this.styleClass>
+				<xp:inputText
+					id="inpEventTime"
+					title="${strings.label_target_title}"
+					value="#{subscriptionBean.subscription.target}"
+					disabled="#{!subscriptionBean.subscription.editable}">
+					<xp:this.attrs>
+						<xp:attr
+							name="placeholder"
+							value="${strings.label_target_title}" />
+						<xp:attr
+							name="aria-describedby"
+							value="timeHelp" />
+					</xp:this.attrs>
+				</xp:inputText>
+				<xp:panel
+					rendered="#{javascript:subscriptionBean.getSubscription().isEditable()}">
+					<div
+						class="input-group-addon"
+						data-target="#eventTime"
+						data-toggle="datetimepicker">
+						<span class="input-group-text">
+							<i
+								class="fa fa-clock-o"
+								aria-hidden="true" />
+						</span>
+					</div>
+				</xp:panel>
+			</xp:panel>
+			<xp:panel
+				rendered="#{javascript:subscriptionBean.getSubscription().isEditable()}">
+				<xp:scriptBlock
+					id="scriptBlockTime"
+					rendered="#{subscriptionBean.subscription.editable}">
+					<xp:this.value><![CDATA[
+		$(document).ready(
+			function(){
+				$('#eventTime').datetimepicker({
+		   			format: 'HH:mm',
+		    		stepping: 1
+		  		});		
+		});]]></xp:this.value>
+				</xp:scriptBlock>
+				<small
+					id="timeHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_target_helper}" />
+				</small>
+			</xp:panel>
+		</div>
+
+		<xp:button
+			value="${strings.btn_edit}"
+			id="btnEdit">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var isAdmin = jsfUtils.hasRole("Administrator");
+	if (!subscriptionBean.getSubscription().isEditable()) {
+		var canEdit = utilityBean.canEdit(database.getFilePath(),subscriptionBean.getSubscription().getUnid());	
+		if (canEdit && isAdmin) {
+			visible = true;
+		}
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+			<i
+				class="fa fa-pencil"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete">
+				<xp:this.action><![CDATA[#{javascript:subscriptionBean.getSubscription().setEditable(true)}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		<xp:panel
+			styleClass="bg-info"
+			tagName="p">
+			<xp:text value="${strings.event_registration_open}" />
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var status = eventBean.getEvent().getStatus();
+	if (null == status || status.equals("open")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+		</xp:panel>
+		
+		<xp:panel
+			styleClass="bg-success"
+			tagName="p">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var status = eventBean.getEvent().getStatus();
+	if (null != status && status.equals("ended")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+			<xp:text>
+				<xp:this.value><![CDATA[#{javascript:var txt = strings ["position_ended"];
+var key = "positionCurrent";
+if (!viewScope.containsKey(key)) {
+	var position = eventBean.loadScoreboardPosition(subscriptionBean.getSubscription().getEventUnid(), subscriptionBean.getSubscription().getRunnerUnid())
+	viewScope.put(key,position);
+}
+if (viewScope.containsKey(key)) {
+	var placeHuman = utilityBean.ordinalize(viewScope.get(key));
+	@ReplaceSubstring(txt,"###",placeHuman);
+}}]]></xp:this.value>
+			</xp:text>&#160;
+ &#160;
+ <xp:link
+					text="scoreboard"
+					title="${strings.link_title_scoreboard}"
+					target="_blank">
+					<xp:this.value><![CDATA[#{javascript:return "scoreboard.xsp?unid=" + subscriptionBean.getSubscription().getEventUnid();}]]></xp:this.value>
+					<i
+						class="fa fa-line-chart"
+						aria-hidden="true">
+					</i>
+					&#160;
+				</xp:link>
+		</xp:panel>
+		
+		<xp:panel
+			styleClass="bg-warning"
+			tagName="p">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var status = eventBean.getEvent().getStatus();
+	if (null != status && status.equals("ended")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+			<xp:text value="${strings.event_ended_prevent}" />
+		</xp:panel>		
+		
+		<xp:panel id="pnlLapsing">
+			<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var status = eventBean.getEvent().getStatus();
+	if (null != status && status.equals("running")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+			<xp:button
+				value="${strings.btn_start_lapse}"
+				id="btnStartLapse"
+				styleClass="btn-primary">
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = true;
+	visible = subscriptionBean.lastLapseInfo(subscriptionBean.getSubscription(),"start");
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+				<i
+					class="fa fa-play"
+					aria-hidden="true">
+				</i>
+				&#160;
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:try {
+	//eventBean.loadEvent(subscriptionBean.getSubscription().getEventUnid());
+	var status = eventBean.getEvent().getStatus();
+	if (status.equalsIgnoreCase("ended")) {
+		getComponent("dlgEvendEnded").show();
+	} else {
+		subscriptionBean.startLapse(subscriptionBean.getSubscription());
+		var lapses = subscriptionBean.getLapses(subscriptionBean.getSubscription());
+		viewScope.put("lapses",lapses);
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:panel>
+				<xp:this.rendered><![CDATA[#{javascript:var visible = false;
+visible = subscriptionBean.lastLapseInfo(subscriptionBean.getSubscription(),"stop");
+return visible;}]]></xp:this.rendered>
+
+				<xp:button
+					value="${strings.btn_stop_lapse}"
+					id="btnStopLapse"
+					styleClass="btn-warning">
+					<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	visible = subscriptionBean.lastLapseInfo(subscriptionBean.getSubscription(),"stop");
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.rendered>
+					<i
+						class="fa fa-stop"
+						aria-hidden="true">
+					</i>
+					&#160;
+					<xp:eventHandler
+						event="onclick"
+						submit="true"
+						refreshMode="complete">
+						<xp:this.action><![CDATA[#{javascript:try {
+	//eventBean.loadEvent(subscriptionBean.getSubscription().getEventUnid());
+	var status = eventBean.getEvent().getStatus();
+	if (status.equalsIgnoreCase("ended")) {
+		getComponent("dlgEvendEnded").show();
+	} else {
+		subscriptionBean.stopLapse(subscriptionBean.getSubscription());
+		var lapses = subscriptionBean.getLapses(subscriptionBean.getSubscription());
+		viewScope.put("lapses",lapses);
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}
+
+var position = eventBean.loadScoreboardPosition(subscriptionBean.getSubscription().getEventUnid(), subscriptionBean.getSubscription().getRunnerUnid())
+if (viewScope.containsKey("positionCurrent")) {
+	viewScope.put("positionPrevious",viewScope.get("positionCurrent"));
+}
+
+viewScope.put("positionCurrent",position);}]]></xp:this.action>
+					</xp:eventHandler>
+				</xp:button>
+				&#160;
+				<i class="fa fa-circle-o-notch fa-spin"></i>
+			</xp:panel>
+		</xp:panel>
+		
+		<xp:panel
+			style="font-size:4em;margin-top:20px;margin-bottom:20px;"
+			styleClass="bg-success bg-success-intense">
+			<xp:this.rendered><![CDATA[#{javascript:var visible = false;
+//eventBean.loadEvent(subscriptionBean.getSubscription().getEventUnid());
+var status = eventBean.getEvent().getStatus();
+if (null != status && status.equals("running")) {
+	var current = null;
+	var key = "positionCurrent";
+	if (viewScope.containsKey(key)) {
+		current = viewScope.get(key)
+	}
+	if (current == 1) {
+		visible = true;
+	}
+}
+return visible;}]]></xp:this.rendered>
+			<center>
+				<xp:text escape="false">
+					<xp:this.value><![CDATA[#{javascript:var txt = strings["lead_taken"];
+var icon = "<i class='fa fa-superpowers fa-spin' aria-hidden='true'></i>";
+return icon + "&#160;" + txt + "&#160;" + icon;}]]></xp:this.value>
+				</xp:text>
+			</center>
+		</xp:panel>
+
+		<xp:panel
+			style="font-size:2em;margin-top:20px;margin-bottom:20px;"
+			styleClass="bg-warning bg-warning-intense">
+			<xp:this.rendered><![CDATA[#{javascript:var visible = false;
+var status = eventBean.getEvent().getStatus();
+if (null != status && status.equals("running")) {
+	var current = null;
+	var key = "positionCurrent";
+	if (viewScope.containsKey(key)) {
+		current = viewScope.get(key)
+	}
+	
+	var previous = null;
+	var key = "positionPrevious";
+	if (viewScope.containsKey(key)) {
+		previous = viewScope.get(key)
+	}
+	
+	if (null != current && null != previous) {
+		if (previous == 1 && current != 1) {
+			visible = true;
+		}
+		
+	}
+}
+return visible;}]]></xp:this.rendered>
+			<center>
+				<xp:text escape="false">
+					<xp:this.value><![CDATA[#{javascript:var txt = strings["lead_lost"];
+var icon = "<i class='fa fa fa-bell' aria-hidden='true'></i>";
+return icon + "&#160;" + txt + "&#160;" + icon;}]]></xp:this.value>
+				</xp:text>
+			</center>
+		</xp:panel>
+
+		<xp:panel
+			style="font-size:2em;padding:10px; margin-top:10px;margin-bottom:10px;">
+			<xp:this.rendered><![CDATA[#{javascript:var visible = false;
+var status = eventBean.getEvent().getStatus();
+if (null != status && status.equals("running")) {
+	var current = null;
+	var key = "positionCurrent";
+	if (viewScope.containsKey(key)) {
+		current = viewScope.get(key)
+	}
+	if (null != current) {
+		visible = true;
+	}
+}
+return visible;}]]></xp:this.rendered>
+
+			<xp:this.styleClass><![CDATA[#{javascript:var up = "bg-success";
+var down = "bg-danger";
+var same = "bg-info";
+
+var current = null;
+var key = "positionCurrent";
+if (viewScope.containsKey(key)) {
+	current = viewScope.get(key)
+}
+
+var previous = null;
+var key = "positionPrevious";
+if (viewScope.containsKey(key)) {
+	previous = viewScope.get(key);
+}
+
+//think reverse
+if (null == previous && null == current) {
+	//return up;
+} else if (null == previous && null != current) {
+	return up;
+} else if (previous < current) {
+	return down;
+} else if (previous > current) {
+	return up;
+} else if (previous == current) {
+	return same;
+} else {
+	//
+}}]]></xp:this.styleClass>
+			<div class="row">
+
+				<div class="col-md-5">
+					<xp:text value="${strings.position_curr}"></xp:text>
+					&#160;
+					<xp:text>
+						<xp:this.value><![CDATA[#{javascript:var key = "positionCurrent";
+if (viewScope.containsKey(key)) {
+	return utilityBean.ordinalize(viewScope.get(key));
+}
+}]]></xp:this.value>
+					</xp:text>
+				</div>
+				<div
+					class="col-md-2"
+					style="padding-top:5px;">
+					<xp:text escape="false">
+						<xp:this.value><![CDATA[#{javascript:var up = "<i class='fa fa-level-up' aria-hidden='true'></i>";
+var down = "<i class='fa fa-level-down' aria-hidden='true'></i>";
+var same = "<i class='fa fa-map-signs' aria-hidden='true'></i>";
+
+var current = null;
+var key = "positionCurrent";
+if (viewScope.containsKey(key)) {
+	current = viewScope.get(key)
+}
+
+var previous = null;
+var key = "positionPrevious";
+if (viewScope.containsKey(key)) {
+	previous = viewScope.get(key);
+}
+
+//think reverse
+if (null == previous && null == current) {
+	//return up;
+} else if (null == previous && null != current) {
+	return up;
+} else if (previous < current) {
+	return down;
+} else if (previous > current) {
+	return up;
+} else if (previous == current) {
+	return same;
+} else {
+	//
+}}]]></xp:this.value>
+					</xp:text>
+				</div>
+				<div class="col-md-5">
+					<xp:panel styleClass="pull-right">
+						<xp:text value="${strings.position_prev}">
+							&#160;
+							<xp:this.rendered><![CDATA[#{javascript:var visible = false;
+var key = "positionPrevious";
+if (viewScope.containsKey(key)) {
+	visible = true;
+}
+return visible;}]]></xp:this.rendered>
+						</xp:text>&#160;
+						<xp:text>
+							<xp:this.value><![CDATA[#{javascript:var key = "positionPrevious";
+if (viewScope.containsKey(key)) {
+	return utilityBean.ordinalize(viewScope.get(key));
+}}]]></xp:this.value>
+						</xp:text>
+					</xp:panel>
+
+				</div>
+			</div>
+		</xp:panel>
+		<xp:panel>
+			<h2><xp:text value="${strings.header_lapses}" />&#160;<span class="badge">
+	<xp:text>
+		<xp:this.value><![CDATA[#{javascript:var coll = viewScope.get("lapses");
+return coll.length;}]]></xp:this.value>
+		<xp:this.converter>
+			<xp:convertNumber
+				type="number"
+				integerOnly="true">
+			</xp:convertNumber>
+		</xp:this.converter>
+	</xp:text></span></h2>
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col"><xp:text value="${strings.th_start}" /></th>
+						<th scope="col"><xp:text value="${strings.th_end}" /></th>
+						<th scope="col"><xp:text value="${strings.th_time}" /></th>
+						<th scope="col"><xp:text value="${strings.th_diff}" /></th>
+						<th scope="col"><xp:text value="${strings.th_score}" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<xp:repeat
+						var="obj"
+						indexVar="idx"
+						id="rpt">
+						<xp:this.rows><![CDATA[#{javascript:
+var coll = viewScope.get("lapses");
+return coll.length;}]]></xp:this.rows>
+
+						<xp:this.value><![CDATA[#{javascript:
+viewScope.get("lapses");}]]></xp:this.value>
+						<tr>
+							<td scope="row">
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:var coll = viewScope.get("lapses");
+return coll.length -idx}]]></xp:this.value>
+									<xp:this.converter>
+										<xp:convertNumber
+											type="number"
+											integerOnly="true">
+										</xp:convertNumber>
+									</xp:this.converter>
+								</xp:text>
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:obj["start"]}]]></xp:this.value>
+									<xp:this.converter>
+										<xp:convertDateTime
+											type="time">
+										</xp:convertDateTime>
+									</xp:this.converter>
+								</xp:text>
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:obj["end"]}]]></xp:this.value>
+								</xp:text>
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:utilityBean.convertSecondsToMinuteFormat(obj["time"])}]]></xp:this.value>
+									<xp:this.converter>
+										<xp:convertDateTime
+											type="time">
+										</xp:convertDateTime>
+									</xp:this.converter>
+								</xp:text>
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:try {
+	var time = obj["time"];
+	if (null != time && !time.equals("")) {
+		utilityBean.differenceBetweenMinutes(subscriptionBean.getSubscription().getTarget(),utilityBean.convertSecondsToMinuteFormat(obj["time"]));
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.value>
+								</xp:text>
+							</td>
+							<td>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:obj["score"]}]]></xp:this.value>
+								</xp:text>
+							</td>
+						</tr>
+					</xp:repeat>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>
+							<strong>
+								<xp:text
+									value="#{javascript:subscriptionBean.summOfAllLapses(subscriptionBean.getSubscription())}">
+									<xp:this.converter>
+										<xp:convertNumber
+											type="number"
+											integerOnly="true">
+										</xp:convertNumber>
+									</xp:this.converter>
+								</xp:text>
+							</strong>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</xp:panel>
+		<xp:button
+			value="${strings.btn_email_subcription}"
+			id="button4">
+			<i
+				class="fa fa-paper-plane-o"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="partial"
+				refreshId="pnlDlgNotifyRunner">
+				<xp:this.action><![CDATA[#{javascript:try {
+	runnerBean.loadRunnerByUnid(subscriptionBean.getSubscription().getRunnerUnid());
+	getComponent("dlgNotifyRunner").show();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccSubscriptionDetails", null, null);
+}}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>		
+	</div>
+	<xe:dialog
+		id="dlgEvendEnded"
+		title="#{strings.dlg_attention_title}">
+		<xe:dialogContent id="dialogContent1">
+			<xp:panel styleClass="container-fluid">
+				<p>
+					<xp:text value="${strings.dlg_attention_txt_ended}" />
+				</p>
+			</xp:panel>
+		</xe:dialogContent>
+
+		<xe:dialogButtonBar id="dialogButtonBar2">
+			<xp:button
+				value="#{strings.btn_ok}"
+				id="btnOK">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:getComponent("dlgEvendEnded").hide();}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+		</xe:dialogButtonBar>
+	</xe:dialog>
+	<xc:ccDlgEmailLink></xc:ccDlgEmailLink>
+</xp:view>

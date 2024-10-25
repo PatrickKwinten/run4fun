@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:runnerBean.loadRunner()}]]></xp:this.beforePageLoad>	
+	<xc:ccLayout>
+		<xp:this.facets>
+			<xp:include
+				pageName='${javascript:if (null != runnerBean.getRunner().getUnid()) {
+	return "ccRunnerDetails.xsp";
+} else {
+	return "ccRunnerNew.xsp"
+}}'
+				id="include1"
+				xp:key="facetMain">
+			</xp:include>
+		</xp:this.facets>
+	</xc:ccLayout>
+
+	<xe:dialog
+		id="dlgFailure"
+		title="Failure">
+		<xe:dialogContent id="dialogContent1">
+			<div>
+				<p>
+					<xp:text value="#{strings.dlg_failure_txt}"></xp:text>
+				</p>
+			</div>
+		</xe:dialogContent>
+		<xe:dialogButtonBar id="dialogButtonBar1">
+			<xp:button
+				id="button1"
+				value="OK">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:getComponent("dlgFailure").hide()}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+		</xe:dialogButtonBar>
+	</xe:dialog>
+</xp:view>

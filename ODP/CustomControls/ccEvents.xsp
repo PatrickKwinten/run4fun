@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:var coll = eventBean.getEvents();
+viewScope.put("coll",coll);}]]></xp:this.beforePageLoad>
+	<div class="container main-content">
+	<div class="page-header">
+		<h1><xp:text value="${strings.header_events}" />
+			<xp:panel tagName="span">
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var key = param.get("q");
+	if (null != key && !key.equals("")) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEvents", null, null);
+}}]]></xp:this.rendered>
+				<small>
+					<xp:text>
+						<xp:this.value><![CDATA[#{javascript:try {
+	var key = param.get("q");
+	if (null != key) {
+		return key;
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEvents", null, null);
+}}]]></xp:this.value>
+					</xp:text>
+				</small>
+			</xp:panel>
+			<xp:panel tagName="span">
+				<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var coll = viewScope.get("coll");
+	if (coll.length > 0) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEvents", null, null);
+}}]]></xp:this.rendered>
+				<span class="badge">
+					<xp:text>
+						<xp:this.value><![CDATA[#{javascript:var coll = viewScope.get("coll");
+return coll.length;}]]></xp:this.value>
+						<xp:this.converter>
+							<xp:convertNumber
+								type="number"
+								integerOnly="true">
+							</xp:convertNumber>
+						</xp:this.converter>
+					</xp:text>
+				</span>
+			</xp:panel>
+		</h1>
+		</div>
+		<xp:panel
+			rendered="#{javascript:appBean.isAnonymous();}">						
+        <div class="row">
+        	<div class="col-md-12">
+        	<p class="bg-info"><xp:text value="${strings.events_anonymous}" /></p>
+        	</div>
+        </div>
+        </xp:panel>
+		<xp:panel id="tblContainer">
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th scope="col"><xp:text value="${strings.th_date}" /></th>
+					<th scope="col"><xp:text value="${strings.th_event}" /></th>
+					<th scope="col"><xp:text value="${strings.th_start}" /></th>
+					<th scope="col"><xp:text value="${strings.th_location}" /></th>
+					<th scope="col"><xp:text value="${strings.th_organizer}" /></th>
+					<th scope="col"><xp:text value="${strings.th_status}" /></th>					
+				</tr>
+			</thead>
+			<tbody>
+				<xp:repeat
+					var="obj"
+					indexVar="idx"
+					id="rpt">
+					<xp:this.rows><![CDATA[#{javascript:var coll = viewScope.get("coll");
+return coll.length;}]]></xp:this.rows>
+					<xp:this.value><![CDATA[#{javascript:return viewScope.get("coll");}]]></xp:this.value>
+					<tr>
+						<td>
+							<xp:text value="#{javascript:idx + 1}">
+								<xp:this.converter>
+									<xp:convertNumber
+										type="number"
+										integerOnly="true">
+									</xp:convertNumber>
+								</xp:this.converter>
+							</xp:text></td>
+						<td scope="row">
+							<xp:text value="#{obj.date}"></xp:text>
+						</td>
+						<td>
+							<xp:link title="${strings.link_title_event}">
+								<xp:this.text><![CDATA[#{javascript:obj["name"]}]]></xp:this.text>
+								<xp:this.value><![CDATA[#{javascript:return "event.xsp?unid=" + obj["UNID"]}]]></xp:this.value>
+							</xp:link>
+						</td>
+						<td>
+							<xp:text value="#{obj.start}"></xp:text>
+						</td>
+						<td>
+							<xp:text value="#{obj.place}"></xp:text>
+						</td>
+						<td>
+							<xp:text value="#{obj.who}"></xp:text>
+						</td>
+						<td>
+							<xp:panel tagName="span">
+								<xp:this.styleClass><![CDATA[#{javascript:try {
+	var status = obj["status"];
+	if (null != status && status.equals("new")) {
+		return "badge bg-primary";
+	} else if (null != status && status.equals("open")) {
+		return "badge bg-info";
+	} else if (null != status && status.equals("closed")) {
+		return "badge bg-success";
+	} else if (null != status && status.equals("running")) {
+		return "badge bg-warning blink_me";
+	}  else if (null != status && status.equals("ended")) {
+		return "badge";
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEvents", null, null);
+}}]]></xp:this.styleClass>
+								<xp:text>
+									<xp:this.value><![CDATA[#{javascript:try {
+	return strings["event_status_" + obj["status"]];
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEvents", null, null);
+}}]]></xp:this.value>
+								</xp:text>
+							</xp:panel>
+						</td>
+						
+					</tr>
+				</xp:repeat>
+			</tbody>
+		</table>		
+		</xp:panel>	
+	</div>
+</xp:view>

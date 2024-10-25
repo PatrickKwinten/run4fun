@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex"
+	>
+	<div class="container main-content">
+		<h1><xp:text value="${strings.header_runner}" />&#160;<small><xp:text value="${strings.header_runner_small_new}" /></small></h1>
+		<xp:panel
+			rendered="#{javascript:context.getUser().isAnonymous()}">
+ 			<xp:text value="${strings.runner_new_anonymous}" />
+ 			&#160;
+ 			<xp:link
+ 				escape="true"
+ 				id="lnkLogin"
+ 				text="${strings.link_login}"
+ 				title="${strings.link_login_title}">
+
+ 			<xp:this.value><![CDATA[#{javascript:try {
+	currAddress = context.getUrl().toString();
+	var href = facesContext.getExternalContext().getRequest().getContextPath() + "?Login&redirectTo=" + currAddress;
+	return href;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccRunnerNew", null, null);
+}}]]></xp:this.value></xp:link>
+ 			.
+		</xp:panel>
+		<xp:panel
+			rendered="#{javascript:!context.getUser().isAnonymous()}">
+		<xp:messages
+			id="messages1"
+			style="margin-bottom:20px;">
+		</xp:messages>
+		
+		<div class="form-group">
+			<label for="evName"><xp:text value="${strings.label_name}" /></label>
+			<xp:inputText
+				id="inpRunnerName"
+				title="${strings.label_name_title}"
+				value="#{runnerBean.runner.name}"
+				styleClass="form-control"
+				disabled="#{javascript:!runnerBean.runner.editable}"
+				validator="#{runnerValidator.valName}">
+				<xp:this.validators>
+					<xp:validateRequired loaded="true">
+						<xp:this.message><![CDATA[#{javascript:strings["runnerValidateName"]}]]></xp:this.message>
+					</xp:validateRequired>
+				</xp:this.validators>
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_name_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="nameHelp" />
+				</xp:this.attrs>
+			</xp:inputText>
+			<small
+				id="nameHelp"
+				class="form-text text-muted">
+				<xp:text value="${strings.label_name_helper}" />
+			</small>
+		</div>
+		
+		<div class="form-group">
+			<label for="evName"><xp:text value="${strings.label_email}" /></label>
+			<xp:inputText
+				id="inputText1"
+				title="${strings.label_email_title}"
+				value="#{runnerBean.runner.email}"
+				styleClass="form-control"
+				disabled="#{javascript:!runnerBean.runner.editable}"
+				validator="#{runnerValidator.valEmail}">
+				<xp:this.validators>
+					<xp:validateRequired loaded="true">
+						<xp:this.message><![CDATA[#{javascript:strings["runnerValidateEmaile"]}]]></xp:this.message>
+					</xp:validateRequired>
+				</xp:this.validators>
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_email_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="nameHelp" />
+				</xp:this.attrs>
+			</xp:inputText>
+			<small
+				id="small1"
+				class="form-text text-muted">
+				<xp:text value="${strings.label_email_helper}" />
+			</small>
+		</div>
+		
+		<div class="form-group">
+			<label for="evPlace"><xp:text value="${strings.label_status}" /></label>
+			<xp:radioGroup
+				id="inpRunnerStatus"
+				value="#{runnerBean.runner.status}"
+				title="${strings.label_status_title}"
+				defaultValue="active">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_status_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="placeHelp" />
+				</xp:this.attrs>
+				<xp:selectItem
+					itemLabel="${strings.runner_status_active}"
+					itemValue="active">
+				</xp:selectItem>
+				<xp:selectItem
+					itemLabel="${strings.runner_status_inactive}"
+					itemValue="inactive">
+				</xp:selectItem>
+			</xp:radioGroup>
+
+			<small
+				id="placeHelp"
+				class="form-text text-muted">
+				<xp:text value="${strings.label_status_helper}" />
+			</small>
+		</div>
+		
+		<div class="form-group">
+			<label for="evInfo"><xp:text value="${strings.label_information}" /></label>
+			<xp:inputTextarea
+				id="inpRunnerInfo"
+				title="${strings.label_information_title}"
+				value="#{runnerBean.runner.information}"
+				rows="5">
+				<xp:this.attrs>
+					<xp:attr
+						name="placeholder"
+						value="${strings.label_information_ph}" />
+					<xp:attr
+						name="aria-describedby"
+						value="infoHelp" />
+				</xp:this.attrs>
+			</xp:inputTextarea>
+			<small
+				id="infoHelp"
+				class="form-text text-muted">
+				<xp:text value="${strings.label_information_helper}" />
+			</small>
+		</div>
+		
+		<xp:button
+			value="${strings.btn_register}"
+			id="btnRegister"
+			disableValidators="false"
+			type="submit"
+			rendered="${javascript:return appBean.canCreateDocuments();}">
+			<i
+				class="fa fa-check"
+				aria-hidden="true">
+			</i>
+			&#160;
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="complete"
+				immediate="false"
+				save="true">
+				<xp:this.action><![CDATA[#{javascript:try {
+	if (runnerBean.save()) {
+		context.redirectToPage("runners");
+	} else {
+		getComponent("dlgFailure").show();
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccRunnerNew", null, null);
+}}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+		</xp:panel>
+	</div>
+</xp:view>

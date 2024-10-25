@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">		
+	<xp:this.beforePageLoad><![CDATA[#{javascript:viewScope.put("scoreboard",eventBean.loadScoreboard());}]]></xp:this.beforePageLoad>
+	<xc:ccLayout><xp:this.facets>
+	<xp:panel xp:key="facetMain">
+	<div class="container main-content">
+	<h1>
+		<xp:text value="${strings.header_scoreboard}"></xp:text>&#160;
+		<small>
+			<xp:text value="#{javascript:eventBean.getEvent().getName()}"></xp:text>
+		</small>
+	</h1>	
+	<table class="table">
+			<thead>
+				<tr>
+					<th scope="col" class="minimal">
+						<xp:text value="${strings.th_rank}"></xp:text>
+					</th>
+					<th class="minimal"></th>					
+					<th scope="col">
+						<xp:text value="${strings.th_runner}"></xp:text>
+					</th>
+					<th scope="col">
+						<xp:text value="${strings.th_lapses}"></xp:text>
+					</th>				
+					<th scope="col">
+						<xp:text value="${strings.th_score}"></xp:text>
+					</th>	
+				</tr>
+			</thead>
+			<tbody>
+				<xp:repeat
+					var="obj"
+					indexVar="idx"
+					id="rpt">
+					<xp:this.rows><![CDATA[#{javascript:var coll = viewScope.get("scoreboard");
+return coll.length;}]]></xp:this.rows>
+<xp:this.value><![CDATA[#{javascript:return viewScope.get("scoreboard");}]]></xp:this.value>
+					<xp:panel tagName="tr">
+						<xp:this.styleClass><![CDATA[#{javascript:if (@Integer(idx) == 0) {
+	return "row-first";
+} else if (@Integer(idx) == 1) {
+	return "row-second";
+} else if (@Integer(idx) == 2) {
+	return "row-third";
+}}]]></xp:this.styleClass>
+						<td><center><xp:text value="#{idx + 1}"></xp:text></center></td>
+						<xp:panel tagName="td">
+							<xp:this.styleClass><![CDATA[#{javascript:if (@Integer(idx) == 0) {
+	return "row-first";
+} else if (@Integer(idx) == 1) {
+	return "row-second";
+} else if (@Integer(idx) == 2) {
+	return "row-third";
+}}]]></xp:this.styleClass>
+							<center>
+							<xp:text escape="false">
+								<xp:this.value><![CDATA[#{javascript:
+if (@Integer(idx) == 0) {
+	return "<i class='fa fa-trophy' aria-hidden='true'></i>";
+} else if (@Integer(idx) == 1) {
+	return "<i class='fa fa-certificate' aria-hidden='true'></i>";
+} else if (@Integer(idx) == 2) {
+	return "<i class='fa fa-certificate' aria-hidden='true'></i>";
+}}]]></xp:this.value>
+							</xp:text></center>
+						</xp:panel>
+						<td>
+							<xp:link
+								text="#{obj.runner}"
+								title="${javascript:strings.link_title_runner_profile}"
+								target="_blank">
+								<xp:this.value><![CDATA[#{javascript:return "runner.xsp?unid=" + obj["runnerUnid"]}]]></xp:this.value>
+							</xp:link>
+						</td>
+						<td>
+							<xp:text value="#{obj.lapses}"></xp:text>
+						</td>
+						<td>
+							<xp:text value="#{obj.score}"></xp:text>
+						</td>
+					</xp:panel>
+				</xp:repeat>
+			</tbody>
+		</table>
+		</div>		
+	</xp:panel></xp:this.facets>
+	</xc:ccLayout>
+</xp:view>

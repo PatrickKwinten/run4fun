@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<outline xmlns="http://www.lotus.com/dxl" name="Global Box Common" publicaccess="false">
+<outlineentry label="Trash" type="namedelementlink">
+<imageref database="C1258B94002EDEDB" name="trash.gif"/>
+<namedelementlink type="view" name="Trash"/>
+</outlineentry>
+</outline>

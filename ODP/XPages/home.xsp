@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xc:ccLayout>
+		<xp:this.facets>
+			<xp:panel xp:key="facetMain">
+				<div class="container container-startpage main-content">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="bs-callout bs-callout-default">
+								<h2>
+									<xp:text value="${strings.home_step1}" />
+								</h2>
+								<p>
+									<xp:text
+										value="${strings.home_step1_txt}"
+										escape="false" />
+								</p>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="bs-callout bs-callout-info">
+							<h2>
+								<xp:text
+									value="${strings.home_step2}"
+									escape="true" />
+							</h2>
+							<p>
+								<xp:text
+									value="${strings.home_step2_txt}"
+									escape="false" />
+							</p>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="bs-callout bs-callout-success">
+								<h2>
+									<xp:text
+										value="${strings.home_step3}"
+										escape="true" />
+								</h2>
+								<p>
+									<xp:text
+										value="${strings.home_step3_txt}"
+										escape="false" />
+								</p>
+							</div>
+						</div>
+					</div>
+					<xp:panel rendered="#{javascript:appBean.isAnonymous();}">						
+						<div class="row">
+							<div class="col-md-12">
+								<p class="bg-info">
+									<xp:text value="${strings.home_anonymous}" />
+								</p>
+							</div>
+						</div>
+					</xp:panel>					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="jumbotron">
+							<h2>
+								<xp:text value="${strings.home_about}" />
+							</h2>
+							<xp:text
+								value="${strings.home_about_txt}"
+								escape="false" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</xp:panel>
+		</xp:this.facets>
+	</xc:ccLayout>
+</xp:view>

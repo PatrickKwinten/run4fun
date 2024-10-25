@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:panel id="pnlDlgReadme">
+
+	<xe:dialog
+		id="dlgReadme"
+		title="#{strings.link_readme}"
+		styleClass="modal-large">
+		<xe:dialogContent id="dialogContent1">
+			<div class="container">
+				<xp:text value="#{strings.dlg_readme_txt}" escape="false"></xp:text>
+				<xp:text value="#{strings.dlg_readme_txt_web}" escape="false"></xp:text>
+			</div>
+		</xe:dialogContent>
+	
+	<xe:dialogButtonBar id="dialogButtonBar1">
+		<xp:button
+			value="#{strings.btn_close}"
+			id="button1"
+			styleClass="btn-primary">
+			<xp:eventHandler
+				event="onclick"
+				submit="true"
+				refreshMode="partial"
+				refreshId="pnlDlgReadme">
+				<xp:this.action><![CDATA[#{javascript:getComponent("dlgReadme").hide();}]]></xp:this.action>
+			</xp:eventHandler>
+		</xp:button>
+	</xe:dialogButtonBar>
+	
+	</xe:dialog>
+	</xp:panel>
+</xp:view>

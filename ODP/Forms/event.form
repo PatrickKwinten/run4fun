@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.lotus.com/dxl" name="event" alias="event" publicaccess="false" renderpassthrough="true">
+<body>
+<richtext>
+<pardef id="1"/>
+<par def="1">event:<field type="text" kind="editable" name="name"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="7" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+</par>
+<par def="1">date:<field usenotesstyle="false" height="0.2500in" width="1in" multiline="true" borderstyle="single" type="datetime" kind="editable" name="date">
+<datetimeformat show="date" date="yearmonthday" fourdigityearfor21stcentury="true" zone="never" dateformat="weekdaydaymonthyear" dayformat="twodigitday" monthformat="twodigitmonth" yearformat="fourdigityear" weekdayformat="shortname" dateseparator1=" " dateseparator2="/" dateseparator3="/" timeseparator=":" timeformat24="true" preference="usersetting"/>
+</field>
+</par>
+<par def="1">start:<field usenotesstyle="false" height="0.2500in" width="1in" multiline="true" borderstyle="single" type="text" kind="editable" name="start"/>
+</par>
+<par def="1">status:<field borderstyle="inset" lookupeachchar="false" lookupaddressonrefresh="false" type="keyword" kind="editable" name="status">
+<keywords helperbutton="false" columns="1" ui="radiobutton">
+<textlist>
+<text>new</text>
+<text>open (for registration)|open</text>
+<text>closed (registration)|closed</text>
+<text>event is running, lapses can be recorded|running</text>
+<text>event has ended|ended</text>
+</textlist>
+</keywords>
+</field>
+</par>
+<par def="1">location:<field type="text" kind="editable" name="location"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="6" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+</par>
+<par def="1">information:<field type="text" kind="editable" name="information"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="6" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+</par>
+</richtext>
+</body>
+<item name="time" summary="false">
+<rawitemdata type="400">
+AAAAAAAAAAA=
+</rawitemdata>
+</item>
+</form>

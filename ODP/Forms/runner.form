@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.lotus.com/dxl" name="runner" publicaccess="false" renderpassthrough="true">
+<body>
+<richtext>
+<pardef id="1"/>
+<par def="1">name:<field type="text" kind="editable" name="name"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="7" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+</par>
+<par def="1">email:<field type="text" kind="editable" name="email"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="6" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+</par>
+<par def="1">information:<field type="text" kind="editable" name="information"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="6" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+</par>
+<par def="1">avatar:<field type="richtext" kind="editable" name="Body"/>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="6" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAEAAAA=
+</compositedata>
+</par>
+<par def="1">status:<field usenotesstyle="false" height="0.2340in" width="1in" multiline="true" borderstyle="inset" lookupeachchar="false" lookupaddressonrefresh="false" type="keyword" kind="editable" name="status">
+<keywords helperbutton="false" columns="1" ui="combobox">
+<textlist>
+<text>active</text>
+<text>inactive</text>
+</textlist>
+</keywords>
+</field>
+</par>
+</richtext>
+</body>
+</form>

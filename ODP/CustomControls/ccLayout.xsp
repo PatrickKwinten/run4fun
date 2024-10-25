@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom"
+	styleClass="dropdown">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:appBean.canCreateDocuments()}]]></xp:this.beforePageLoad>
+	<xe:keepSessionAlive id="keepSessionAlive" delay="0" />
+	<xp:this.resources>
+		<xp:script
+			src="/debugDialog.jss"
+			clientSide="false">
+		</xp:script>
+		<xp:styleSheet href="/debugDialog.css"></xp:styleSheet>
+		<xp:bundle
+			src="/strings.properties"
+			var="strings">
+		</xp:bundle>
+
+		<xp:script
+			src="/OpenLogXPages.jss"
+			clientSide="false">
+		</xp:script>
+		<xp:script
+			src="/ssjsUtils.jss"
+			clientSide="false">
+		</xp:script>
+	</xp:this.resources>
+	<xc:ccUtilsResources></xc:ccUtilsResources>
+	<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">			
+			<div class="navbar-header">
+				<button
+					type="button"
+					class="navbar-toggle collapsed"
+					data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a
+					class="navbar-brand"
+					href="init.xsp">
+					<xp:text value="${strings.brand_name}" />
+				</a>
+			</div>
+
+			<div
+				class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<xp:panel tagName="li">
+						<xp:this.styleClass><![CDATA[#{javascript:try {
+	var list = [];
+	list.push("/event.xsp");
+	list.push("/events.xsp");
+	list.push("/scoreboard.xsp");
+	if (@IsMember(view.getPageName(),list)) {
+		return "dropdown active";
+	} else {
+		return "dropdown inactive";
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.styleClass>
+						<a
+							href="#"
+							class="dropdown-toggle"
+							data-toggle="dropdown"
+							role="button"
+							aria-haspopup="true"
+							aria-expanded="false">
+							<xp:text value="${strings.layout_events}" />
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<xp:panel tagName="li">
+								<xp:this.rendered><![CDATA[#{javascript:!appBean.isAnonymous() && appBean.canCreateDocuments();}]]></xp:this.rendered>
+								<xp:link
+									escape="true"
+									text="${strings.layout_event_register}"
+									id="lnkEventRegistration"
+									title="${strings.layout_event_register}">
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete"
+										immediate="true">
+										<xp:this.action>
+											<xp:openPage
+												name="/event.xsp">
+											</xp:openPage>
+										</xp:this.action>
+									</xp:eventHandler>
+								</xp:link>
+							</xp:panel>
+							<xp:panel
+								tagName="li"
+								styleClass="divider">
+								<xp:this.attrs>
+									<xp:attr
+										name="role"
+										value="separator">
+									</xp:attr>
+								</xp:this.attrs>
+								<xp:this.rendered><![CDATA[#{javascript:!appBean.isAnonymous() && appBean.canCreateDocuments();}]]></xp:this.rendered>
+							</xp:panel>
+							<li>
+								<xp:link
+									text="${strings.layout_events_all}"
+									value="/events.xsp"
+									title="${strings.layout_events_all}">
+								</xp:link>
+							</li>
+							<li>
+								<xp:link
+									text="${strings.layout_events_forward}"
+									value="/events.xsp?q=forward"
+									title="${strings.layout_events_forward}">
+								</xp:link>
+							</li>
+							<li>
+								<xp:link
+									text="${strings.layout_events_past}"
+									value="/events.xsp?q=past"
+									title="${strings.layout_events_past}">
+								</xp:link>
+							</li>
+						</ul>
+					</xp:panel>
+				</ul>
+
+				<ul class="nav navbar-nav">
+					<xp:panel tagName="li">
+						<xp:this.styleClass><![CDATA[#{javascript:try {
+	var list = [];
+	list.push("/runner.xsp");
+	list.push("/runners.xsp");
+	if (@IsMember(view.getPageName(),list)) {
+		return "dropdown active";
+	} else {
+		return "dropdown inactive";
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.styleClass>
+
+						<a
+							href="#"
+							class="dropdown-toggle"
+							data-toggle="dropdown"
+							role="button"
+							aria-haspopup="true"
+							aria-expanded="false">
+							<xp:text value="${strings.layout_runners}" />
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<xp:panel tagName="li">
+								<xp:this.rendered><![CDATA[#{javascript:!appBean.isAnonymous() && appBean.canCreateDocuments();}]]></xp:this.rendered>
+								<xp:link
+									text="${strings.layout_runner_register}"
+									value="/runner.xsp"
+									id="link5"
+									title="${strings.layout_runner_register}">
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete"
+										immediate="true">
+									</xp:eventHandler>
+								</xp:link>
+							</xp:panel>
+							<xp:panel
+								tagName="li"
+								styleClass="divider">
+								<xp:this.attrs>
+									<xp:attr
+										name="role"
+										value="separator">
+									</xp:attr>
+								</xp:this.attrs>
+								<xp:this.rendered><![CDATA[#{javascript:!appBean.isAnonymous() && appBean.canCreateDocuments();}]]></xp:this.rendered>
+							</xp:panel>
+							<li>
+								<xp:link
+									text="${strings.layout_runners_active}"
+									value="/runners.xsp?q=active"
+									title="${strings.layout_runners_active}">
+								</xp:link>
+							</li>
+							<li>
+								<xp:link
+									text="${strings.layout_runners_inactive}"
+									value="/runners.xsp?q=inactive"
+									title="${strings.layout_runners_inactive}">
+								</xp:link>
+							</li>
+							<li>
+								<xp:link
+									text="${strings.layout_runners_all}"
+									value="/runners.xsp?q="
+									title="${strings.layout_runners_all}">
+								</xp:link>
+							</li>
+						</ul>
+					</xp:panel>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<xp:panel
+						rendered="#{javascript:!appBean.isAnonymous();}"
+						tagName="li">
+						<xp:link
+							escape="true"
+							id="lnkLogout"
+							text="Logout">
+							<xp:this.value><![CDATA[#{javascript:try {
+	var appUrl = facesContext.getExternalContext().getRequest().getContextPath();
+	var url = appUrl + "?logout&redirectto=" + appUrl;
+	return url;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.value>
+							<xp:this.title><![CDATA[#{javascript:try {
+	var nam:NotesName = session.createName(session.getEffectiveUserName());
+	return nam.getCommon() + strings["layout_logout_title"];
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.title>
+						</xp:link>
+
+					</xp:panel>
+					<xp:panel
+						rendered="#{javascript:appBean.isAnonymous();}"
+						tagName="li"
+						styleClass="liAnonymous">
+						<xp:link
+							escape="true"
+							id="lnkLogin"
+							text="${strings.layout_login_text}"
+							title="${strings.layout_login_title}">
+							<xp:this.value><![CDATA[#{javascript:try {
+	currAddress = context.getUrl().toString();
+	var href = facesContext.getExternalContext().getRequest().getContextPath() + "?Login&redirectTo=" + currAddress;
+	return href;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccLayout", null, null);
+}}]]></xp:this.value>
+						</xp:link>
+					</xp:panel>
+					<li class="dropdown">
+						<a
+							href="#"
+							class="dropdown-toggle"
+							data-toggle="dropdown"
+							role="button"
+							aria-haspopup="true"
+							aria-expanded="false">
+							<i
+								class="fa fa-cogs"
+								aria-hidden="true">
+							</i>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<xp:link
+									text="${strings.layout_utilities}"
+									id="lnkUtilties"
+									title="${strings.layout_utilities}">
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete"
+										immediate="true">
+										<xp:this.action><![CDATA[#{javascript:getComponent("dlgUtils").show();}]]></xp:this.action>
+									</xp:eventHandler>
+								</xp:link>
+							</li>
+							<li
+								role="separator"
+								class="divider">
+							</li>
+							<li>
+								<xp:link
+									text="${strings.layout_dump_object}"
+									id="linkDump"
+									title="${strings.layout_dump_object}">
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete"
+										immediate="true">
+										<xp:this.action><![CDATA[#{javascript:getComponent("dlgBDebug").show();}]]></xp:this.action>
+									</xp:eventHandler>
+								</xp:link>
+							</li>
+							<li
+								role="separator"
+								class="divider">
+							</li>											
+							<xp:panel tagName="li">								
+								<xp:link
+									id="link2"
+									text="${strings.link_english}"
+									title="${link_english}">
+									<i
+										class="fa fa-language"
+										aria-hidden="true">
+									</i>
+									&#160;
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete">
+										<xp:this.action><![CDATA[#{javascript:context.setLocale(null);
+context.reloadPage(); }]]></xp:this.action>
+									</xp:eventHandler>
+								</xp:link>
+							</xp:panel>
+							<xp:panel tagName="li">	
+								<xp:link
+									id="link1"
+									text="${strings.link_dutch}"
+									title="${strings.link_dutch}">
+									<i
+										class="fa fa-language"
+										aria-hidden="true">
+									</i>
+									&#160;
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete">
+										<xp:this.action><![CDATA[#{javascript:context.setLocaleString("nl"); 
+context.reloadPage(); }]]></xp:this.action>
+									</xp:eventHandler>
+								</xp:link>
+							</xp:panel>
+							<li
+								role="separator"
+								class="divider">
+							</li>
+							<xp:panel tagName="li">	
+								<xp:link
+									id="link3"
+									text="${strings.link_readme}"
+									title="${strings.link_readme}">
+									<i
+										class="fa fa-info-circle"
+										aria-hidden="true">
+									</i>
+									&#160;
+									<xp:eventHandler
+										event="onclick"
+										submit="true"
+										refreshMode="complete"
+										immediate="true">
+										<xp:this.action><![CDATA[#{javascript:getComponent("dlgReadme").show();}]]></xp:this.action>
+									</xp:eventHandler>
+								</xp:link>
+							</xp:panel>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<main role="main">
+		<xp:callback
+			facetName="facetMain"
+			id="cbMain" />		
+	</main>
+	<xc:ccFooter></xc:ccFooter>
+	<xc:ccDlgUtils></xc:ccDlgUtils>
+	<xc:ccDlgReadme></xc:ccDlgReadme>
+	<xc:ccDumpObject></xc:ccDumpObject>
+</xp:view>

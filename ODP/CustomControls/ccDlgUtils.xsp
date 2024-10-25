@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:var roles = jsfUtils.getCurUserRoles();
+viewScope.put("roles",roles);}]]></xp:this.beforePageLoad>
+	<xp:panel>
+		<xe:dialog
+			id="dlgUtils"
+			title="#{strings.dlg_utilities_title}">
+			<xe:dialogContent id="dialogContent1">
+				<div class="container-fluid">
+					<xp:panel
+						id="pnlDebugClasses"
+						styleClass="form-group">
+						<label><xp:text value="#{strings.label_debug}" /></label>
+						<xp:checkBoxGroup
+							id="checkBoxGroup1"
+							value="#{sessionScope.debugClasses}"
+							layout="pageDirection"
+							disableTheme="true">
+							<xp:this.attrs>
+								<xp:attr
+									name="width"
+									value="100%">
+								</xp:attr>
+							</xp:this.attrs>
+							<xp:selectItems>
+								<xp:this.value><![CDATA[#{javascript:appBean.getAllowedDebugClasses();}]]></xp:this.value>
+							</xp:selectItems>
+							<xp:eventHandler
+								event="onchange"
+								submit="true"
+								refreshMode="partial"
+								refreshId="pnlDebugClasses">
+							</xp:eventHandler>
+						</xp:checkBoxGroup>
+						<xp:panel>
+							<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = true;
+	if (sessionScope.containsKey("debugClasses")) {
+		var coll = sessionScope.get("debugClasses");
+		if (coll.length > 0){
+			visible = false;
+		}
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgUtils", null, null);
+}}]]></xp:this.rendered>
+							<p class="bg-info">
+								<xp:text
+									value="#{strings.dlg_utilities_txt_java_empty}" />
+							</p>
+						</xp:panel>
+						<xp:panel>
+							<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	if (sessionScope.containsKey("debugClasses")) {
+		var coll = sessionScope.get("debugClasses");
+		if (coll.length > 0){
+			visible = true;
+		}
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgUtils", null, null);
+}}]]></xp:this.rendered>
+							<p class="bg-danger">
+								<xp:text
+									value="#{strings.dlg_utilities_txt_java_selected}" />
+							</p>
+						</xp:panel>
+					</xp:panel>
+
+					<xp:panel
+						id="panel1"
+						styleClass="form-group">
+						<label><xp:text value="#{strings.label_userroles}" /></label>
+						<xp:panel>
+							<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var coll = viewScope.get("roles");
+	if (coll.length > 0) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgUtils", null, null);
+}}]]></xp:this.rendered>
+							<ul>
+								<xp:repeat
+									var="rolesObj"
+									indexVar="rolesIdx">
+									<xp:this.value><![CDATA[#{javascript:return viewScope.get("roles");}]]></xp:this.value>
+									<li>
+										<xp:text
+											value="#{javascript:rolesObj}">
+										</xp:text>
+									</li>
+								</xp:repeat>
+							</ul>
+						</xp:panel>
+						<xp:panel>
+							<xp:this.rendered><![CDATA[#{javascript:try {
+	var visible = false;
+	var coll = viewScope.get("roles");
+	if (coll.length == 0) {
+		visible = true;
+	}
+	return visible;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgUtils", null, null);
+}}]]></xp:this.rendered>
+							<p class="bg-info">
+								<xp:text
+									value="#{strings.label_userrole_helper}" />
+							</p>
+						</xp:panel>
+					</xp:panel>
+				</div>
+			</xe:dialogContent>
+
+			<xe:dialogButtonBar id="dialogButtonBar1">
+				<xp:panel>
+					<xp:button
+						value="#{strings.btn_close}"
+						id="btnClose">
+						<xp:eventHandler
+							event="onclick"
+							submit="true"
+							refreshMode="complete">
+							<xp:this.action><![CDATA[#{javascript:getComponent("dlgUtils").hide()}]]></xp:this.action>
+						</xp:eventHandler>
+					</xp:button>
+				</xp:panel>
+			</xe:dialogButtonBar>
+		</xe:dialog>
+	</xp:panel>
+</xp:view>

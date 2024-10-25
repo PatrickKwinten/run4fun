@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<outline xmlns="http://www.lotus.com/dxl" name="Global Box Admin" alias="$ol-box-admin" publicaccess="false">
+<outlineentry label="By Forms" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="Admin\By Form"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Events" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_events_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Runners" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_runners_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Runners (subscribed)" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_candidates_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Subscriptions" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_subscriptions_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Lapses" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_lapses_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Lapses (Categorized)" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_categorized_lapses_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+<outlineentry label="JSON Lapses (Completed)" type="namedelementlink" hide="web">
+<imageref database="C1258B94002EDEDB" name="listbullet.gif"/>
+<namedelementlink type="view" name="vw_categorized_lapses_completed_JSON"/>
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]":"[Administrator]"; @UserRoles)</formula>
+</code>
+</outlineentry>
+</outline>

@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<div class="container main-content">
+		<h1>
+			<xp:text value="${strings.header_event}" />
+			&#160;
+			<small>
+				<xp:text value="${strings.header_runner_small_new}" />
+			</small>
+		</h1>
+		<xc:ccEventStatus></xc:ccEventStatus>
+		<xp:panel
+			rendered="#{javascript:context.getUser().isAnonymous()}">
+			<xp:text value="${strings.events_anonymous}" />
+		</xp:panel>
+		<xp:panel
+			rendered="#{javascript:!context.getUser().isAnonymous()}">
+			<xp:messages
+				id="messages1"
+				style="margin-bottom:20px;">
+			</xp:messages>
+			<div class="form-group">
+				<label for="evName">
+					<xp:text value="${strings.label_name}" />
+				</label>
+				<xp:inputText
+					id="inpEventName"
+					title="${strings.label_event_title}"
+					value="#{eventBean.event.name}"
+					styleClass="form-control"
+					disabled="#{javascript:!eventBean.event.editable}"
+					validator="#{eventValidator.valName}">
+					<xp:this.validators>
+						<xp:validateRequired loaded="true">
+							<xp:this.message><![CDATA[#{javascript:strings["eventValidateName"]}]]></xp:this.message>
+						</xp:validateRequired>
+					</xp:this.validators>
+					<xp:this.attrs>
+						<xp:attr
+							name="placeholder"
+							value="${strings.label_event_ph}" />
+						<xp:attr
+							name="aria-describedby"
+							value="nameHelp" />
+					</xp:this.attrs>
+				</xp:inputText>
+				<small
+					id="nameHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_event_helper}" />
+				</small>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="evDate">
+							<xp:text value="${strings.label_date}" />
+						</label>
+						<div
+							class="input-group date"
+							id="eventDate"
+							data-target-input="nearest">
+							<xp:inputText
+								styleClass="form-control datetimepicker-input eventDate"
+								id="inpEventDate"
+								value="#{eventBean.event.date}"
+								autocomplete="off"
+								validator="#{eventValidator.valDate}"
+								showReadonlyAsDisabled="true"
+								title="${strings.label_date_title}">
+								<xp:this.validators>
+									<xp:validateRequired
+										loaded="true">
+										<xp:this.message><![CDATA[#{javascript:strings["eventValidateDate"]}]]></xp:this.message>
+									</xp:validateRequired>
+								</xp:this.validators>
+								<xp:this.attrs>
+									<xp:attr
+										name="placeholder"
+										value="${strings.label_date_ph}" />
+									<xp:attr
+										name="data-target"
+										value="#eventDate" />
+									<xp:attr
+										name="aria-describedby"
+										value="dateHelp" />
+									<xp:attr
+										name="maxlength"
+										value="0" />
+								</xp:this.attrs>
+								<xp:this.converter>
+									<xp:convertDateTime
+										type="date"
+										pattern="yyyy/MM/dd" />
+								</xp:this.converter>
+							</xp:inputText>
+							<span
+								class="input-group-addon"
+								data-target="#eventDate"
+								data-toggle="datetimepicker"
+								id="inpDateIcon">
+								<span class="input-group-text">
+									<i
+										class="fa fa-calendar"
+										aria-hidden="true" />
+								</span>
+							</span>
+						</div>
+						<small
+							id="small2"
+							class="form-text text-muted">
+							<xp:text
+								value="${strings.label_date_helper}" />
+						</small>
+						<xp:scriptBlock
+							id="scriptBlockDate"
+							rendered="#{eventBean.event.editable}">
+							<xp:this.value><![CDATA[
+	$(document).ready(
+		function(){
+		$('#eventDate').datetimepicker({
+	   			format: 'YYYY/MM/DD',
+	   			startDate: new Date(),
+	   			todayBtn: true,
+				clearBtn: true,
+				calendarWeeks: true,
+				autoclose: true,
+				todayHighlight: true,
+				ignoreReadonly:true,
+				widgetPositioning: {
+            vertical: 'auto',
+            horizontal: 'left'
+        }
+	  		});		
+	});
+	
+	$('#inpDateIcon').click(function() {
+	    $(document).ready(function() {
+	        x$('#{id:inpEventDate}').focus();
+	    });
+	});
+	]]></xp:this.value>
+						</xp:scriptBlock>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="evTime">
+					<xp:text value="${strings.label_time}" />
+				</label>
+				<div
+					class="input-group"
+					id="eventTime"
+					data-target-input="nearest">
+					<xp:inputText
+						styleClass="form-control datetimepicker-input"
+						id="inpEventTime"
+						value="#{eventBean.event.time}"
+						disabled="#{javascript:!eventBean.event.editable}"
+						autocomplete="off"
+						title="${strings.label_time_title}">
+						<xp:this.attrs>
+							<xp:attr
+								name="placeholder"
+								value="${strings.label_time_ph}" />
+							<xp:attr
+								name="data-target"
+								value="#eventTime" />
+							<xp:attr
+								name="aria-describedby"
+								value="timeHelp" />
+						</xp:this.attrs>
+					</xp:inputText>
+					<div
+						class="input-group-addon"
+						data-target="#eventTime"
+						data-toggle="datetimepicker">
+						<span class="input-group-text">
+							<i
+								class="fa fa-clock-o"
+								aria-hidden="true" />
+						</span>
+					</div>
+				</div>
+				<small
+					id="small1"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_time_helper}" />
+				</small>
+				<xp:scriptBlock
+					id="scriptBlockTime"
+					rendered="#{eventBean.event.editable}">
+					<xp:this.value><![CDATA[
+	$(document).ready(
+		function(){
+			$('#eventTime').datetimepicker({
+	   			format: 'HH:mm',
+	    		stepping: 1
+	  		});		
+	});]]></xp:this.value>
+				</xp:scriptBlock>
+			</div>
+
+			<div class="form-group">
+				<label for="evPlace">
+					<xp:text value="${strings.label_location}" />
+				</label>
+				<xp:inputText
+					id="inpEventPlace"
+					title="${strings.label_location_title}"
+					value="#{eventBean.event.location}">
+					<xp:this.attrs>
+						<xp:attr
+							name="placeholder"
+							value="${strings.label_location_ph}" />
+						<xp:attr
+							name="aria-describedby"
+							value="placeHelp" />
+					</xp:this.attrs>
+				</xp:inputText>
+				<small
+					id="placeHelp"
+					class="form-text text-muted">
+					<xp:text value="${strings.label_location_helper}" />
+				</small>
+			</div>
+
+			<div class="form-group">
+				<label for="evInfo">
+					<xp:text value="${strings.label_information}" />
+				</label>
+				<xp:inputTextarea
+					id="inpEventInfo"
+					title="${strings.label_information_event_title}"
+					value="#{eventBean.event.information}"
+					rows="5">
+					<xp:this.attrs>
+						<xp:attr
+							name="placeholder"
+							value="${strings.label_information_event_title}" />
+						<xp:attr
+							name="aria-describedby"
+							value="infoHelp" />
+					</xp:this.attrs>
+				</xp:inputTextarea>
+				<small
+					id="infoHelp"
+					class="form-text text-muted">
+					<xp:text
+						value="${strings.label_information_event_helper}" />
+				</small>
+			</div>
+			<xp:button
+				value="${strings.btn_register}"
+				id="btnRegister"
+				disableValidators="false"
+				type="submit"
+				rendered="${javascript:return appBean.canCreateDocuments();}">
+				<i
+					class="fa fa-check"
+					aria-hidden="true">
+				</i>
+				&#160;
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="complete"
+					immediate="false"
+					save="true">
+					<xp:this.action><![CDATA[#{javascript:try {
+	if (eventBean.save()) {
+		context.redirectToPage("events")
+	} else {
+		getComponent("dlgFailure").show();
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventNew", null, null);
+}}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<h3>
+				<xp:text value="${strings.header_scoring}" />
+			</h3>
+			<p>
+				<xp:text value="${strings.scoring_txt}" />
+			</p>
+			<xp:checkBox
+				text="#{strings.scoring_checkbox}"
+				id="cbScoring"
+				value="#{sessionScope.cbScoring}"
+				checkedValue="1"
+				uncheckedValue="0"
+				defaultChecked="true">
+				<xp:eventHandler
+					event="onclick"
+					submit="true"
+					refreshMode="partial"
+					refreshId="pnlCbScoring">
+				</xp:eventHandler>
+			</xp:checkBox>
+			<xp:panel id="pnlCbScoring">
+				<xp:panel id="pnlScoringTable">
+					<xp:this.styleClass><![CDATA[#{javascript:try {
+	var className = "";
+	var cb = getComponent("cbScoring").value;
+	if (cb.equals("1")) {
+		className = "hidden";
+	}
+	return className;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.styleClass>
+					<br />
+					<h5>
+						<xp:text value="${strings.header_scoring_diff}" />
+					</h5>
+					<div class="form-inline">
+						<table class="table table-condensed">
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th>
+										<xp:text
+											value="${strings.th_points}" />
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<xp:text
+											value="${strings.td_bonus}" />
+										&#160;
+										<xp:text escape="false">
+											<xp:this.value><![CDATA[#{javascript:try {
+	var title = strings["td_bonus_helper"];
+	var icon ="<i class='fa fa-info-circle' aria-hidden='true' title='###'></i>";
+	var icon = @ReplaceSubstring(icon,"###",title);
+	return icon;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventDetails", null, null);
+}}]]></xp:this.value>
+										</xp:text>
+									</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>
+										<xp:inputText
+											title="#{strings.td_bonus_title}"
+											id="inputText2"
+											required="true"
+											size="3"
+											defaultValue="500"
+											value="#{eventBean.event.pointsBonus}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+							</tbody>
+							<thead>
+								<tr>
+									<th></th>
+									<th>
+										<xp:text
+											value="#{strings.th_lower}" />
+									</th>
+									<th>
+										<xp:text
+											value="#{strings.th_time_diff}" />
+									</th>
+									<th>
+										<xp:text
+											value="#{strings.th_upper}" />
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr>
+									<td>
+										<xp:text
+											value="#{strings.td_diff_smallest}" />
+									</td>
+									<td>
+										&#160;&#160;
+										<xp:inputText
+											id="inpLowBound1"
+											required="true"
+											size="1"
+											defaultValue="5"
+											value="#{eventBean.event.lowBound1}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td></td>
+									<td></td>
+									<td>
+										<xp:inputText
+											id="inpPointsBound1"
+											required="true"
+											size="3"
+											defaultValue="200"
+											value="#{eventBean.event.pointsBound1}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>
+										&#62;
+										<xp:inputText
+											id="inpLowBound2"
+											required="true"
+											size="1"
+											defaultValue="5"
+											value="#{eventBean.event.lowBound2}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td></td>
+									<td>
+										&#60;=
+										<xp:inputText
+											id="inpUppBound2"
+											required="true"
+											size="1"
+											defaultValue="10"
+											value="#{eventBean.event.uppBound2}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td>
+										<xp:inputText
+											id="inpPointsBound2"
+											required="true"
+											size="3"
+											defaultValue="150"
+											value="#{eventBean.event.pointsBound2}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>
+										&#62;
+										<xp:inputText
+											id="inpLowBound3"
+											required="true"
+											size="1"
+											defaultValue="10"
+											value="#{eventBean.event.lowBound3}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td></td>
+									<td>
+										&#60;=
+										<xp:inputText
+											id="inpUppBound3"
+											required="true"
+											size="1"
+											defaultValue="20"
+											value="#{eventBean.event.uppBound3}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td>
+										<xp:inputText
+											id="inpPointsBound3"
+											required="true"
+											size="3"
+											defaultValue="100"
+											value="#{eventBean.event.pointsBound3}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>
+										&#62;
+										<xp:inputText
+											id="inpLowBound4"
+											required="true"
+											size="1"
+											defaultValue="20"
+											value="#{eventBean.event.lowBound4}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td></td>
+									<td>
+										&#60;=
+										<xp:inputText
+											id="inpUppBound4"
+											required="true"
+											size="1"
+											defaultValue="30"
+											value="#{eventBean.event.uppBound4}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td>
+										<xp:inputText
+											id="inpPointsBound4"
+											required="true"
+											size="3"
+											defaultValue="75"
+											value="#{eventBean.event.pointsBound4}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>
+										&#62;
+										<xp:inputText
+											id="inpLowBound5"
+											required="true"
+											size="1"
+											defaultValue="30"
+											value="#{eventBean.event.lowBound5}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td></td>
+									<td>
+										&#60;=
+										<xp:inputText
+											id="inpUppBound5"
+											required="true"
+											size="1"
+											defaultValue="50"
+											value="#{eventBean.event.uppBound5}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td>
+										<xp:inputText
+											id="inpPointsBound5"
+											required="true"
+											size="3"
+											defaultValue="30"
+											value="#{eventBean.event.pointsBound5}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<xp:text
+											value="${strings.td_diff_largest}" />
+									</td>
+									<td>
+										&#62;
+										<xp:inputText
+											id="inpLowBound6"
+											required="true"
+											size="1"
+											defaultValue="50"
+											value="#{eventBean.event.lowBound6}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td></td>
+									<td>
+										&#60;=
+										<xp:inputText
+											id="inpUppBound6"
+											required="true"
+											size="1"
+											defaultValue="100"
+											value="#{eventBean.event.uppBound6}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+										&#160;
+										<xp:text
+											value="#{strings.td_seconds}" />
+									</td>
+									<td>
+										<xp:inputText
+											id="inpPointsBound6"
+											required="true"
+											size="3"
+											defaultValue="10"
+											value="#{eventBean.event.pointsBound6}"
+											style="width:5em;">
+											<xp:this.attrs>
+												<xp:attr
+													name="maxlength "
+													value="3">
+												</xp:attr>
+											</xp:this.attrs>
+											<xp:eventHandler
+												event="onkeypress"
+												submit="false">
+												<xp:this.script><![CDATA[enterNumbersOnly()]]></xp:this.script>
+											</xp:eventHandler>
+										</xp:inputText>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</xp:panel>
+			</xp:panel>
+
+		</xp:panel>
+	</div>
+</xp:view>

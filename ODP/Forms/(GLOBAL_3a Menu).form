@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.lotus.com/dxl" name="(GLOBAL: Menu)" alias="$f-global-menu-main" publicaccess="false" bgcolor="silver" nofieldexchange="true" renderpassthrough="true">
+<code event="postopen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv := dbname + "-SNDVIK-AppNavigator";
+
+@If( @Environment( varEnv ) = ""; varCurrentBox := "1"; "");
+
+@If( varCurrentBox = "1"; @SetEnvironment( varEnv ; "1");"");
+
+@Command( [ViewRefreshFields] ) ;
+@Command([RefreshHideFormulas])</formula>
+</code>
+<body>
+<richtext>
+<pardef id="1">
+<code event="hidewhen">
+<formula>1</formula>
+</code>
+</pardef>
+<par def="1">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>
+</run>
+<run>
+<font size="9pt" color="red" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<field type="text" kind="computedfordisplay" name="SaveOptions">
+<code event="defaultvalue">
+<formula>"0"</formula>
+</code>
+</field>
+</run>
+<compositedata type="98" prevtype="65418" nexttype="222" afterparcount="11" containertype="65418" aftercontainercount="1" afterbegincount="3">
+Yg4BAIQAAAAAAAAAAAA=
+</compositedata>
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>
+</run>
+</par>
+<par def="1">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+<table widthtype="fitwindow" minrowheight="6in" leftmargin="0.7500in" columnspacing="0.0785in" refwidth="6.3229in">
+<tablecolumn width="100%"/>
+<tablerow>
+<tablecell colorstyle="vgradient" borderwidth="0px" bgcolor="white" altbgcolor="silver">
+<pardef id="3" keepwithnext="true" keeptogether="true"/>
+<par def="3">
+<run>
+<font size="4pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<pardef id="4" leftmargin="1%" keepwithnext="true" keeptogether="true"/>
+<par def="4">
+<run>
+<font size="1pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<table widthtype="fitmargins" cellbordercolor="silver" leftmargin="0" columnspacing="0.0396in" refwidth="6.1451in">
+<border style="image" width="1px">
+<imageref name="table-roundborder-purple.gif"/>
+</border>
+<tablecolumn width="100%"/>
+<tablerow>
+<tablecell borderwidth="0px" bgcolor="#364350">
+<pardef id="6" leftmargin="0.0104in" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>1</formula>
+</code>
+</pardef>
+<par def="6">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+<table widthtype="fitmargins" leftmargin="0.0104in" rowspacing="0.0194in" refwidth="6.0556in">
+<tablecolumn width="0.1819in"/>
+<tablecolumn width="100%"/>
+<tablecolumn width="0.1819in"/>
+<tablerow>
+<tablecell valign="center" borderwidth="0px">
+<pardef id="8" leftmargin="1%" keepwithnext="true" keeptogether="true"/>
+<par def="8">
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+<picture width="16px" height="16px">
+<imageref name="boxiconviews.gif"/>
+</picture>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</par>
+</tablecell>
+<tablecell valign="center" borderwidth="0px">
+<pardef id="9" leftmargin="1%" keepwithnext="true" keeptogether="true"/>
+<par def="9">
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="silver"/>
+</run>
+<actionhotspot hotspotstyle="none">
+<code event="click">
+<formula>varCurrentBox := "1";
+
+database := @Subset( @DbName ;  -1 );
+filedir := @FileDir( database );
+dbname := @If( @Right( database ; filedir ) = "";  database ; @Right( database ; filedir ) );
+
+varEnv := dbname + "-SNDVIK-AppNavigator";
+varActiveBox := @Environment( varEnv );
+varActiveBoxList := @Explode( varActiveBox ; "," );
+
+@If(
+	@IsMember( varCurrentBox ; varActiveBoxList );
+		@Do(
+			@SetEnvironment( varEnv ; @Implode(@Sort( @Unique( @Trim( @Replace( varActiveBoxList ; varCurrentBox ;"" ) ) ) ) ;"," ) )
+		);
+
+		@Do(
+				@SetEnvironment( varEnv ; @Implode(@Sort( @Unique( varActiveBoxList : varCurrentBox ) ); "," ))
+		)
+);
+
+@Command( [ViewRefreshFields] ) ;
+@Command( [RefreshHideFormulas] )</formula>
+</code>
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="silver"/>Documents</run>
+</actionhotspot>
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="silver"/>
+</run>
+</par>
+</tablecell>
+<tablecell valign="center" borderwidth="0px">
+<pardef id="10" align="center" leftmargin="1%" keepwithnext="true" keeptogether="true"/>
+<par def="10">
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+<actionhotspot hotspotstyle="none">
+<code event="click">
+<formula>varCurrentBox := "1";
+
+database := @Subset( @DbName ;  -1 );
+filedir := @FileDir( database );
+dbname := @If( @Right( database ; filedir ) = "";  database ; @Right( database ; filedir ) );
+
+varEnv := dbname + "-SNDVIK-AppNavigator";
+varActiveBox := @Environment( varEnv );
+varActiveBoxList := @Explode( varActiveBox ; "," );
+
+@If(
+	@IsMember( varCurrentBox ; varActiveBoxList );
+		@Do(
+			@SetEnvironment( varEnv ; @Implode(@Sort( @Unique( @Trim( @Replace( varActiveBoxList ; varCurrentBox ;"" ) ) ) ) ;"," ) )
+		);
+
+		@Do(
+				@SetEnvironment( varEnv ; @Implode(@Sort( @Unique( varActiveBoxList : varCurrentBox ) ); "," ))
+		)
+);
+
+@Command( [ViewRefreshFields] ) ;
+@Command( [RefreshHideFormulas] )</formula>
+</code>
+<run>
+<font name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<picture width="12px" height="12px" scaledheight="0.1250in" scaledwidth="0.1250in">
+<imageref>
+<code event="value">
+<formula>database := @Subset( @DbName ;  -1 );
+filedir := @FileDir( database );
+dbname := @If( @Right( database ; filedir ) = "";  database ; @Right( database ; filedir ) );
+
+varEnv := dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="1";
+
+@If( @IsMember( varCurrentBox; varActiveBoxList);
+
+"boxwindowclosegray.gif";
+"boxwindowopengray.gif"
+)</formula>
+</code>
+</imageref>
+</picture>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</actionhotspot>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<par def="6">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+</tablecell>
+</tablerow>
+<tablerow>
+<tablecell borderwidth="0px 0px 1px">
+<pardef id="11" spaceafter="1.5" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="1";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="11">
+<run>
+<font size="3pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<embeddedoutline outline="$ol-box-menu" scrollbars="false" widthtype="fitwindow" heighttype="fitcontent" height="1.1979in">
+<title>
+<layout labelalign="topleft" labelhoffset="0" labelvoffset="0"/>
+</title>
+<toplevel normalcolor="#364350" selectedcolor="#c962a5">
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<layout labelalign="topleft" entryvoffset="0.0396in" imagealign="topleft" labelhoffset="0.1965in" labelvoffset="0"/>
+</toplevel>
+<sublevel>
+<font size="8pt" style="bold"/>
+<layout labelalign="topleft" entryhoffset="0.1965in" entryvoffset="0.0792in" imagealign="topleft" labelhoffset="0" labelvoffset="0"/>
+</sublevel>
+</embeddedoutline>
+<run>
+<font size="3pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+<tablerow>
+<tablecell borderwidth="1px 0px 0px">
+<pardef id="12" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="1";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="12">
+<run>
+<font size="4pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<par def="12">
+<run>
+<font name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<embeddedoutline outline="Global Box Common" scrollbars="false" widthtype="fitwindow" heighttype="fitcontent" height="0.2292in">
+<title>
+<layout labelalign="topleft" labelhoffset="0" labelvoffset="0"/>
+</title>
+<toplevel normalcolor="#364350" selectedcolor="#add305">
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<layout labelalign="middleleft" entryvoffset="0.0299in" imagealign="topleft" labelhoffset="0.1965in" labelvoffset="0.0299in"/>
+</toplevel>
+<sublevel>
+<layout labelalign="topleft" entryhoffset="0.2000in" imagealign="topleft" labelhoffset="0.2000in" labelvoffset="0"/>
+</sublevel>
+</embeddedoutline>
+<run>
+<font name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<par def="12">
+<run>
+<font size="4pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<par def="3">
+<run>
+<font size="4pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<table widthtype="fitmargins" cellbordercolor="#b0c8e0" leftmargin="0" columnspacing="0.0396in" refwidth="6.1451in">
+<border style="image" width="1px">
+<imageref name="table-roundborder-purple.gif"/>
+</border>
+<tablecolumn width="100%"/>
+<tablerow>
+<tablecell borderwidth="0px" bgcolor="#364350">
+<par def="6">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+<table widthtype="fitmargins" leftmargin="0.0104in" rowspacing="0.0194in" refwidth="6.0556in">
+<tablecolumn width="0.1819in"/>
+<tablecolumn width="100%"/>
+<tablecolumn width="0.1819in"/>
+<tablerow>
+<tablecell valign="center" borderwidth="0px">
+<pardef id="14" leftmargin="1%" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]" : "[Template]" : "[Administrator]"; @UserRoles)</formula>
+</code>
+</pardef>
+<par def="14">
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+<picture width="16px" height="16px" scaledheight="0.1667in" scaledwidth="0.1667in">
+<imageref name="boxiconviews.gif"/>
+</picture>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</par>
+</tablecell>
+<tablecell valign="center" borderwidth="0px">
+<pardef id="15" leftmargin="1%" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]" : "[Template]" : "[Administrator]"; @UserRoles)</formula>
+</code>
+</pardef>
+<par def="15">
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="silver"/>
+</run>
+<actionhotspot hotspotstyle="none">
+<code event="click">
+<formula>varCurrentBox:="2";
+
+database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+
+@If(
+	@IsMember( varCurrentBox; varActiveBoxList);
+		@Do(
+			@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(@Trim(@Replace(varActiveBoxList;varCurrentBox;""))));","))
+		);
+
+		@Do(
+				@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(varActiveBoxList : varCurrentBox));","))
+		)
+);
+
+@Command( [ViewRefreshFields] ) ;
+@Command( [RefreshHideFormulas] )</formula>
+</code>
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="silver"/>Administration</run>
+</actionhotspot>
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="silver"/>
+</run>
+</par>
+</tablecell>
+<tablecell valign="center" borderwidth="0px">
+<pardef id="16" align="center" leftmargin="1%" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]" : "[Template]" : "[Administrator]"; @UserRoles)</formula>
+</code>
+</pardef>
+<par def="16">
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+<actionhotspot hotspotstyle="none">
+<code event="click">
+<formula>varCurrentBox:="2";
+
+database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+
+@If(
+	@IsMember( varCurrentBox; varActiveBoxList);
+		@Do(
+			@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(@Trim(@Replace(varActiveBoxList;varCurrentBox;""))));","))
+		);
+
+		@Do(
+				@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(varActiveBoxList : varCurrentBox));","))
+		)
+);
+
+@Command( [ViewRefreshFields] ) ;
+@Command( [RefreshHideFormulas] )</formula>
+</code>
+<run>
+<font name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<picture width="12px" height="12px" scaledheight="11.5938in" scaledwidth="15.1146in">
+<imageref>
+<code event="value">
+<formula>database := @Subset( @DbName ;  -1 );
+filedir := @FileDir( database );
+dbname := @If( @Right( database ; filedir ) = "";  database ; @Right( database ; filedir ) );
+
+varEnv := dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="2";
+
+@If( @IsMember( varCurrentBox; varActiveBoxList);
+
+"boxwindowclosegray.gif";
+"boxwindowopengray.gif"
+)</formula>
+</code>
+</imageref>
+</picture>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</actionhotspot>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<par def="6">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+</tablecell>
+</tablerow>
+<tablerow>
+<tablecell borderwidth="0px">
+<pardef id="17" spaceafter="1.5" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="2";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="17">
+<run>
+<font size="3pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<embeddedoutline outline="$ol-box-admin" widthtype="fitwindow" heighttype="fitcontent" height="0.9583in">
+<title>
+<layout labelalign="topleft" labelhoffset="0" labelvoffset="0"/>
+</title>
+<toplevel normalcolor="#364350" selectedcolor="#ffa50c">
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+<layout labelalign="topleft" entryvoffset="0.0396in" imagealign="topleft" labelhoffset="0.1965in" labelvoffset="0"/>
+</toplevel>
+<sublevel>
+<layout labelalign="topleft" entryhoffset="0.2000in" imagealign="topleft" labelhoffset="0.2000in" labelvoffset="0"/>
+</sublevel>
+</embeddedoutline>
+<run>
+<font size="3pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<pardef id="18" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>@IsNotMember("[DBAdmin]" : "[Template]" : "[Administrator]"; @UserRoles)</formula>
+</code>
+</pardef>
+<par def="18">
+<run>
+<font size="4pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<table widthtype="fitmargins" cellbordercolor="silver" leftmargin="0" columnspacing="0.0396in" refwidth="6.1451in">
+<border style="image" width="1px">
+<imageref name="table-roundborder-gray.gif"/>
+</border>
+<tablecolumn width="100%"/>
+<tablerow>
+<tablecell borderwidth="0px" bgcolor="#add305">
+<par def="6">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+<table widthtype="fitmargins" leftmargin="0.0104in" rowspacing="0.0194in" refwidth="6.0556in">
+<tablecolumn width="0.1819in"/>
+<tablecolumn width="100%"/>
+<tablecolumn width="0.1819in"/>
+<tablerow>
+<tablecell valign="center" borderwidth="0px">
+<par def="8">
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+<picture width="16px" height="16px">
+<gif>
+R0lGODlhEAAQAOZKAObm5sDAwL+/v+Hh4fT09OLi4sPDw9vb2/Pz87i4uNbW1rOzs+rq6uDg4Ovr
+68LCwvv7+/7+/vb29vX19cnJyZWVlc3Nzf39/ejo6Lu7u/z8/OXl5bCwsN3d3e3t7e/v7/Dw8Kur
+q+Pj49jY2NXV1efn59DQ0L29vcTExNLS0vr6+rq6ure3t7W1taenp6ysrK6urtTU1KioqKmpqdzc
+3Pj4+JiYmM/Pz8XFxdHR0fLy8ry8vKampvf398vLy+7u7tnZ2aOjo87OzpmZmcfHx6GhoaWlpZ+f
+n97e3v///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5
+BAEAAEoALAAAAAAQABAAAAe+gEqCg4SFhBcYJgYJCQYWDBGFBEQmGAgXGh4NDwEShD4DEUmjpBA3
+FIQCNaKkoxAMMIQnPSUfEhAqIEgGAC+EGRIOSAokOQY7ARshhCsTPwAFAAMWDw8iMoQJBAwDHSJI
+FCcCBTyELAglHUANBygJGQNBhC06BSMkNCMBCywNR4QLdMVIcUCBAA4LkAwhxAEJggMEFQSgAABF
+BUIbZgjxQGACgQ8FVlQAUAgBDiNFQrioYEPABEODVDhwoMFQIAA7
+</gif>
+</picture>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</par>
+</tablecell>
+<tablecell valign="center" borderwidth="0px">
+<par def="9">
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>
+</run>
+<actionhotspot hotspotstyle="none">
+<code event="click">
+<formula>varCurrentBox:="999";
+
+database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+
+@If(
+	@IsMember( varCurrentBox; varActiveBoxList);
+		@Do(
+			@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(@Trim(@Replace(varActiveBoxList;varCurrentBox;""))));","))
+		);
+
+		@Do(
+				@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(varActiveBoxList : varCurrentBox));","))
+		)
+);
+
+@Command( [ViewRefreshFields] ) ;
+@Command( [RefreshHideFormulas] )</formula>
+</code>
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>System Information</run>
+</actionhotspot>
+<run>
+<font size="12pt" style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>
+</run>
+</par>
+</tablecell>
+<tablecell valign="center" borderwidth="0px">
+<par def="10">
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+<actionhotspot hotspotstyle="none">
+<code event="click">
+<formula>varCurrentBox:="999";
+
+database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+
+@If(
+	@IsMember( varCurrentBox; varActiveBoxList);
+		@Do(
+			@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(@Trim(@Replace(varActiveBoxList;varCurrentBox;""))));","))
+		);
+
+		@Do(
+				@SetEnvironment( varEnv ; @Implode(@Sort(@Unique(varActiveBoxList : varCurrentBox));","))
+		)
+);
+
+@Command( [ViewRefreshFields] ) ;
+@Command( [RefreshHideFormulas] )</formula>
+</code>
+<run>
+<font name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<picture width="12px" height="12px" scaledheight="0.1250in" scaledwidth="0.1146in">
+<imageref>
+<code event="value">
+<formula>database := @Subset( @DbName ;  -1 );
+filedir := @FileDir( database );
+dbname := @If( @Right( database ; filedir ) = "";  database ; @Right( database ; filedir ) );
+
+varEnv := dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="999";
+
+@If( @IsMember( varCurrentBox; varActiveBoxList);
+
+"boxwindowclosegray.gif";
+"boxwindowopengray.gif"
+)</formula>
+</code>
+</imageref>
+</picture>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</actionhotspot>
+<run>
+<font style="bold" name="Arial" pitch="variable" truetype="true" familyid="20" color="#3f621f"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<par def="6">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+</tablecell>
+</tablerow>
+<tablerow>
+<tablecell borderwidth="0px" bgcolor="#f7f7f7">
+<pardef id="20" leftmargin="0.0104in" spacebefore="1.5" spaceafter="1.5" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="999";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="20">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>Application:</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="gray"/>
+<break/>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#ffa50c"/>
+<computedtext>
+<code event="value">
+<formula>@DbTitle</formula>
+</code>
+</computedtext>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="red"/>
+</run>
+</par>
+<pardef id="21" leftmargin="0.0104in" spaceafter="1.5" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="999";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="21">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>Server:</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="gray"/>
+<break/>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#add305"/>
+<computedtext>
+<code event="value">
+<formula>varServer:=@Name([Abbreviate]; @Subset(@DbName; 1));
+
+@If( varServer =""; "local"; varServer)</formula>
+</code>
+</computedtext>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#0082bf"/>
+</run>
+</par>
+<pardef id="22" leftmargin="0.0104in" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>database := @Subset(@DbName; -1);
+filedir := @FileDir(database);
+dbname:=@If(@Right( database ; filedir ) =""; database; @Right( database ; filedir ));
+
+varEnv:=dbname + "-SNDVIK-AppNavigator";
+
+varActiveBox:=@Environment(varEnv);
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="999";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="22">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>User Name:</run>
+</par>
+<par def="21">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#089ce2"/>
+<computedtext>
+<code event="value">
+<formula>@Name([CN]; @UserName)</formula>
+</code>
+</computedtext>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#0082bf"/>
+</run>
+</par>
+<par def="22">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>My Roles:</run>
+</par>
+<par def="21">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#c962a5"/>
+<computedtext>
+<code event="value">
+<formula>Roles:=@Implode(@ReplaceSubstring(@ReplaceSubstring(@UserRoles; "["; "- "); "]"; ""); @NewLine);
+@If(@Elements(Roles)=0; "&lt;NO ROLES ACTIVATED&gt;"; Roles)</formula>
+</code>
+</computedtext>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#0082bf"/>
+</run>
+</par>
+<par def="22">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#364350"/>Today's Date:</run>
+</par>
+<par def="21">
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="#e8472f"/>
+<computedtext>
+<code event="value">
+<formula>@Date(@Now)</formula>
+</code>
+</computedtext>
+</run>
+<run>
+<font size="12pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+<pardef id="23" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>varActiveBox:=@Environment("SNDVIK-AppNavigator");
+varActiveBoxList:=@Explode(varActiveBox;",");
+varCurrentBox:="999";
+
+@IsNotMember( varCurrentBox; varActiveBoxList)</formula>
+</code>
+</pardef>
+<par def="23">
+<run>
+<font size="3pt" name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<pardef id="24" keepwithnext="true" keeptogether="true">
+<code event="hidewhen">
+<formula>1</formula>
+</code>
+</pardef>
+<par def="24">
+<run>
+<font size="9pt" name="Arial" pitch="variable" truetype="true" familyid="20" color="green"/>&lt;!-- hidden --&gt;</run>
+</par>
+</tablecell>
+</tablerow>
+</table>
+<pardef id="2" leftmargin="0.7500in"/>
+<par def="2">
+<run>
+<font name="Arial" pitch="variable" truetype="true" familyid="20"/>
+</run>
+</par>
+</richtext>
+</body>
+</form>

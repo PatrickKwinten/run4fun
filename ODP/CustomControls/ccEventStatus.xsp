@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+	<xp:view
+		xmlns:xp="http://www.ibm.com/xsp/core"
+		xmlns:xe="http://www.ibm.com/xsp/coreex">
+		<xp:this.resources>
+		<xp:styleSheet href="/breadcrumbs.css"></xp:styleSheet>
+	</xp:this.resources>
+		<xp:panel
+			id="pnlBreadCrumbs"
+			style="margin-top:20px;">
+			<div class="stepwizard">
+				<div class="stepwizard-row">
+					<xp:panel styleClass="stepwizard-step">
+						<xp:button
+							disabled="true"
+							style="cursor: default;"
+							id="btn-status-new">
+							<xe:this.styleClass><![CDATA[#{javascript:try {
+	var active = "btn btn-circle btn-status-seb btn-status-seb-active btn-status-new";
+	var passed = "btn btn-circle btn-status-seb btn-status-seb-passed";
+	var standard = "btn btn-circle btn-status-seb btn-status-seb-next";
+	
+	if (null != eventBean.getEvent()) {
+		var status = eventBean.getEvent().getStatus();
+		print("status=" + status)
+		if (status.equals("new")) {
+			return active;
+		} else if (status.equals("open") | status.equals("closed") | status.equals("running") | status.equals("ended")) {
+			return passed;	
+		} else {
+			return standard;
+		}
+	}	
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventStatus", null, null);
+}}]]></xe:this.styleClass>
+							<i
+								class="fa fa-leaf"
+								aria-hidden="true">
+							</i>
+						</xp:button>
+						<p>
+							<xp:text
+								value="#{strings.event_status_new}">
+							</xp:text>
+						</p>
+					</xp:panel>
+					<xp:panel styleClass="stepwizard-step">
+						<xp:button
+							disabled="true"
+							style="cursor: default;"
+							id="btn-status-open">
+							<xe:this.styleClass><![CDATA[#{javascript:try {
+	var active = "btn btn-circle btn-status-seb btn-status-seb-active btn-status-open";
+	var passed = "btn btn-circle btn-status-seb btn-status-seb-passed";
+	var standard = "btn btn-circle btn-status-seb btn-status-seb-next";
+	
+	if (null != eventBean.getEvent()) {
+		var status = eventBean.getEvent().getStatus();	
+		if (status.equals("open")) {
+			return active;
+		} else if (status.equals("new")) {
+			return standard;	
+		} else {
+			return passed;
+		}
+	}	
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventStatus", null, null);
+}}]]></xe:this.styleClass>
+							<i
+								class="fa fa-fire"
+								aria-hidden="true">
+							</i>
+						</xp:button>
+						<p>
+							<xp:text
+								value="#{strings.event_status_open}">
+							</xp:text>
+						</p>
+					</xp:panel>
+					<xp:panel styleClass="stepwizard-step">
+						<xp:button
+							disabled="true"
+							style="cursor: default;"
+							id="btn-status-closed">
+							<xe:this.styleClass><![CDATA[#{javascript:try {
+	var active = "btn btn-circle btn-status-seb btn-status-seb-active btn-status-closed";
+	var passed = "btn btn-circle btn-status-seb btn-status-seb-passed";
+	var standard = "btn btn-circle btn-status-seb btn-status-seb-next";
+	
+	if (null != eventBean.getEvent()) {
+		var status = eventBean.getEvent().getStatus();	
+		if (status.equals("closed")) {
+			return active;
+		} else if (status.equals("new") || status.equals("open")) {
+			return standard;	
+		} else {
+			return passed;
+		}
+	}	
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventStatus", null, null);
+}}]]></xe:this.styleClass>
+							<i
+								class="fa fa-lock"
+								aria-hidden="true">
+							</i>
+						</xp:button>
+						<p>
+							<xp:text
+								value="#{strings.event_status_closed}">
+							</xp:text>
+						</p>
+					</xp:panel>
+					<xp:panel styleClass="stepwizard-step">
+						<xp:button
+							disabled="true"
+							style="cursor: default;"
+							id="btn-status-running">
+							<xe:this.styleClass><![CDATA[#{javascript:try {
+	var active = "btn btn-circle btn-status-seb btn-status-seb-active btn-status-running";
+	var passed = "btn btn-circle btn-status-seb btn-status-seb-passed";
+	var standard = "btn btn-circle btn-status-seb btn-status-seb-next";
+	
+	if (null != eventBean.getEvent()) {
+		var status = eventBean.getEvent().getStatus();
+		
+		if (status.equals("running")) {
+			return active;
+		} else if (status.equals("ended")) {
+			return passed;	
+		} else {
+			return standard;
+		}	
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventStatus", null, null);
+}}]]></xe:this.styleClass>
+							<i
+								class="fa fa-heartbeat"
+								aria-hidden="true">
+							</i>
+						</xp:button>
+						<p>
+							<xp:text
+								value="#{strings.event_status_running}">
+							</xp:text>
+						</p>
+					</xp:panel>
+
+					<xp:panel styleClass="stepwizard-step">
+						<xp:button
+							disabled="true"
+							style="cursor: default;"
+							id="button1">
+							<xe:this.styleClass><![CDATA[#{javascript:try {
+	var active = "btn btn-circle btn-status-seb btn-status-seb-active btn-status-ended";
+	var passed = "btn btn-circle btn-status-seb btn-status-seb-passed";
+	var standard = "btn btn-circle btn-status-seb btn-status-seb-next";	
+	if (null != eventBean.getEvent()) {
+		var status = eventBean.getEvent().getStatus();		
+		if (status.equals("ended")) {
+			return active;
+		}  else {
+			return standard;
+		}	
+	}
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccEventStatus", null, null);
+}}]]></xe:this.styleClass>
+							<i
+								class="fa fa-flag-checkered"
+								aria-hidden="true">
+							</i>
+						</xp:button>
+						<p>
+							<xp:text
+								value="#{strings.event_status_ended}">
+							</xp:text>
+						</p>
+					</xp:panel>
+				</div>
+			</div>
+		</xp:panel>
+</xp:view>

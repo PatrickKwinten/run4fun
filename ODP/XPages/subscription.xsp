@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">		
+	<xp:this.beforePageLoad><![CDATA[#{javascript:subscriptionBean.loadSubscription();
+eventBean.loadEvent(subscriptionBean.getSubscription().getEventUnid())}]]></xp:this.beforePageLoad>
+	<xc:ccLayout>
+		<xp:this.facets>
+			<xp:include
+				pageName='${javascript:if (null != subscriptionBean.getSubscription().getUnid()) {
+	return "ccSubscriptionDetails.xsp";
+}}'
+				id="include1"
+				xp:key="facetMain">
+			</xp:include>
+		</xp:this.facets>
+	</xc:ccLayout>	
+</xp:view>

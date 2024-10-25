@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view xmlns="http://www.lotus.com/dxl" name="(GLOBAL: Menu Alternative)" alias="$v-global-menu-alternative" hide="web mobile" showinmenu="false" publicaccess="true" comment="opened at DB launch - alternative way to navigate through the application" unreadmarks="none" onopengoto="lastopened" onrefresh="displayindicator" headers="beveled" opencollapsed="false" showresponsehierarchy="false" showmargin="false" shrinkrows="false" extendlastcolumn="false" showhierarchies="false" unreadcolor="black" rowlinecount="1" headerlinecount="1" rowspacing="1" bgcolor="white" totalscolor="black" headerbgcolor="white" boldunreadrows="false" evaluateactions="false" allownewdocuments="false" allowcustomizations="false" hidemarginborder="false" marginwidth="0px" marginbgcolor="white" uniquekeys="false" indexrefresh="manual" initialbuildrestricted="false" noemptycategories="false">
+<code event="selection">
+<formula>SELECT NONE</formula>
+</code>
+<actionbar useappletinbrowser="true" showdefaultrightclickitems="false" bgcolor="#364350" bordercolor="black">
+<actionbarstyle height="5ex">
+<font size="9pt" name="multilingual"/>
+</actionbarstyle>
+<actionbuttonstyle showdropdown="true" bgcolor="none" displayborder="never" textalign="center"/>
+<font size="14pt" color="silver"/>
+<border style="solid" width="0px 0px 6px" color="#364350"/>
+<action title="Application\Startpage">
+<code event="click">
+<formula>@SetTargetFrame("NotesView");
+@Command([Compose]; "":""; "$p-global-start")</formula>
+</code>
+</action>
+<action title="Documents\New\Event">
+<code event="click">
+<formula>@Command([Compose]; "event")</formula>
+</code>
+</action>
+<action title="Documents\New\" displaytype="menuseparator"/>
+<action title="Documents\New\Runner">
+<code event="click">
+<formula>@Command([Compose]; "runner")</formula>
+</code>
+<code event="hidewhen">
+<formula>@IsNotMember(@UserRoles; "[DBAdmin]":"[Administrator]":"[Template]")</formula>
+</code>
+</action>
+<action title="Documents\" displaytype="menuseparator"/>
+<action title="Documents\Events">
+<code event="click">
+<lotusscript>Sub Click(Source As Button)
+	Dim ws As New NotesUIWorkspace
+	Call ws.SetTargetFrame("NotesView")
+	Dim uidb As NotesUIDatabase
+	Set uidb = ws.CurrentDatabase	
+	Call uidb.OpenView("events")	
+End Sub</lotusscript>
+</code>
+</action>
+<action title="Documents\Runners">
+<code event="click">
+<lotusscript>Sub Click(Source As Button)
+	Dim ws As New NotesUIWorkspace
+	Call ws.SetTargetFrame("NotesView")
+	Dim uidb As NotesUIDatabase
+	Set uidb = ws.CurrentDatabase	
+	Call uidb.OpenView("runners")	
+End Sub</lotusscript>
+</code>
+</action>
+<action title="Documents\Subscriptions">
+<code event="click">
+<lotusscript>Sub Click(Source As Button)
+	Dim ws As New NotesUIWorkspace
+	Call ws.SetTargetFrame("NotesView")
+	Dim uidb As NotesUIDatabase
+	Set uidb = ws.CurrentDatabase	
+	Call uidb.OpenView("subscriptions")	
+End Sub</lotusscript>
+</code>
+</action>
+<action title="Documents\Lapses">
+<code event="click">
+<lotusscript>Sub Click(Source As Button)
+	Dim ws As New NotesUIWorkspace
+	Call ws.SetTargetFrame("NotesView")
+	Dim uidb As NotesUIDatabase
+	Set uidb = ws.CurrentDatabase	
+	Call uidb.OpenView("lapses")
+End Sub</lotusscript>
+</code>
+</action>
+<action title="Documents\(Untitled)" showinmenu="false" displaytype="menuseparator"/>
+<action title="Documents\Trash">
+<code event="click">
+<lotusscript>Sub Click(Source As Button)
+	Dim ws As New NotesUIWorkspace
+	Call ws.SetTargetFrame("NotesView")
+	Dim uidb As NotesUIDatabase
+	Set uidb = ws.CurrentDatabase	
+	Call uidb.OpenView("Trash")	
+End Sub</lotusscript>
+</code>
+</action>
+<action title="Preview\Preview on Bottom" align="right">
+<code event="click">
+<formula>@SetTargetFrame("Main");
+@Command( [OpenFrameset] ; "$fs-notes-documents-vr" );
+@Environment("SNDVIK-AppPreview";"$fs-notes-documents-vr")</formula>
+</code>
+</action>
+<action title="Preview\Preview on Side" align="right">
+<code event="click">
+<formula>@SetTargetFrame("Main");
+@Command( [OpenFrameset] ; "$fs-notes-documents-hr" );
+@Environment("SNDVIK-AppPreview";"$fs-notes-documents-hr")</formula>
+</code>
+</action>
+<action title="Help\Using This Application" showinmenu="false" align="right">
+<code event="click">
+<formula>@Command( [HelpUsingDatabase] )</formula>
+</code>
+</action>
+<action title="Help\About This Application" align="right">
+<code event="click">
+<formula>@Command( [HelpAboutDatabase] )</formula>
+</code>
+</action>
+</actionbar>
+<column hidedetailrows="false" itemname="$0" width="10" resizable="true" separatemultiplevalues="false" sortnoaccent="true" sortnocase="true" showaslinks="false">
+<columnheader title="#">
+<font size="9pt" style="bold"/>
+</columnheader>
+<code event="value">
+<formula>@DocNumber</formula>
+</code>
+</column>
+<item name="TmpViewDesignCollation" sign="true">
+<text>sv</text>
+</item>
+</view>

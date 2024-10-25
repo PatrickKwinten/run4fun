@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+  <faces-config-extension>
+    <namespace-uri>http://www.ibm.com/xsp/custom</namespace-uri>
+    <default-prefix>xc</default-prefix>
+  </faces-config-extension>
+  <composite-component>
+    <component-type>ccUtilsResourcesAMDDisable</component-type>
+    <composite-name>ccUtilsResourcesAMDDisable</composite-name>
+    <composite-file>/ccUtilsResourcesAMDDisable.xsp</composite-file>
+    <composite-extension>
+      <designer-extension>
+        <in-palette>true</in-palette>
+        <category>KKOM Plugins</category>
+        <render-markup>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &#xd;
+&lt;xp:view xmlns:xp="http://www.ibm.com/xsp/core"&gt; &#xd;
+&lt;xp:panel style="border:2px dotted #DDD;margin:10px 0 10px 0;"&gt; &#xd;
+&lt;h3&gt;Custom Control - ccUtilsResourcesAMDDisable&lt;/h3&gt;&#xd;
+&lt;p&gt;Disables AMD loading and conflict betweeen Dojo an jQuery.&lt;/p&gt;&#xd;
+&lt;p&gt;Place this before loading your plugin resources.&lt;/p&gt;&#xd;
+&lt;/xp:panel&gt; &#xd;
+&lt;/xp:view&gt;</render-markup>
+      </designer-extension>
+    </composite-extension>
+  </composite-component>
+</faces-config>

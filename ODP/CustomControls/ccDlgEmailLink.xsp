@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view
+	xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.resources>
+		<xp:script
+			src="/xpHTMLMail.jss"
+			clientSide="false">
+		</xp:script>
+	</xp:this.resources>
+	<xp:panel id="pnlDlgNotifyRunner">
+		<xe:dialog
+			title="#{strings.dlg_notify_title}"
+			id="dlgNotifyRunner">
+			<xe:dialogContent id="dialogContent1">
+				<xp:panel>
+					<xp:panel styleClass="form-group">
+						<label for="evEmail"><xp:text value="${strings.label_email}" /></label>
+						<xp:div styleClass="form-control-fake">
+							<xp:text>
+								<xp:this.value><![CDATA[#{javascript:try{
+	var email = runnerBean.getRunner().getEmail();
+	viewScope.put("tmpEmail", email);
+	return email;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgEmailLink", null, null);
+}}]]></xp:this.value>
+							</xp:text>
+						</xp:div>
+					</xp:panel>
+					<xp:panel styleClass="form-group">
+						<label for="evPage"><xp:text value="${strings.label_page_link}" /></label>
+						<xp:div styleClass="form-control-fake">
+							<xp:text>
+								<xp:this.value><![CDATA[#{javascript:try {
+	var page = context.getUrl().toString()
+	viewScope.put("tmpPage", page);
+	return page;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgEmailLink", null, null);
+}}]]></xp:this.value>
+							</xp:text>
+						</xp:div>
+					</xp:panel>
+					<xp:panel styleClass="form-group">
+						<label for="evMsg"><xp:text value="${strings.label_message}" /></label>
+						<xp:div styleClass="form-control-fake">
+							<xp:text>
+								<xp:this.value><![CDATA[#{javascript:try {
+	var txt = strings["runnerNotifyMessage"];
+	var event = subscriptionBean.getSubscription().getEvent();
+	txt = @ReplaceSubstring(txt,"###",event);
+	viewScope.put("tmpTxt", txt);
+	return txt;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgEmailLink", null, null);
+}}]]></xp:this.value>
+							</xp:text>
+						</xp:div>
+					</xp:panel>
+				</xp:panel>
+			</xe:dialogContent>
+
+			<xe:dialogButtonBar id="dialogButtonBar1">
+				<xp:button
+					value="#{strings.btn_cancel}"
+					id="btnCancel">
+					<xp:eventHandler
+						event="onclick"
+						submit="true"
+						refreshMode="partial"
+						refreshId="pnlDlgNotifyRunner">
+						<xp:this.action><![CDATA[#{javascript:getComponent("dlgNotifyRunner").hide()}]]></xp:this.action>
+					</xp:eventHandler>
+				</xp:button>
+				<xp:button
+					value="#{strings.btn_send_link}"
+					id="btnMail"
+					styleClass="btn-primary">
+					<i
+						class="fa fa-paper-plane-o"
+						aria-hidden="true">
+					</i>
+					&#160;
+					<xp:this.disabled><![CDATA[#{javascript:try {
+	var disabled = false;
+	var email = runnerBean.getRunner().getEmail();
+	if (null == email | email.equals("")) {
+		disabled = true;
+	}
+	return disabled;
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgEmailLink", null, null);
+}}]]></xp:this.disabled>
+					<xp:eventHandler
+						event="onclick"
+						submit="true"
+						refreshMode="partial"
+						refreshId="pnlDlgNotifyRunner">
+						<xp:this.action><![CDATA[#{javascript:try {
+	sendHTMLEmail();
+	getComponent("dlgNotifyRunner").hide();
+} catch(e) {
+	var msg = "Error: " + e;
+	log.logError(msg, SEVERITY_HIGH, e, null, context.getUrl().toString(), "ccDlgEmailLink", null, null);
+}
+}]]></xp:this.action>
+					</xp:eventHandler>
+				</xp:button>
+			</xe:dialogButtonBar>
+		</xe:dialog>
+	</xp:panel>
+</xp:view>
